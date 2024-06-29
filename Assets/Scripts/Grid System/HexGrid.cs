@@ -52,21 +52,21 @@ namespace PopsBubble
             }
         }
         
-        public List<HexCell> NeighbourCells(HexCell cell)
+        public HexCell[] NeighbourCells(HexCell cell)
         {
             Vector2Int coords = cell.Coordinates;
             return NeighbourCells(coords);
         }
 
-        public List<HexCell> NeighbourCells(Vector2Int coords)
+        public HexCell[] NeighbourCells(Vector2Int coords)
         {
-            List<HexCell> neighbours = new List<HexCell>();
+            HexCell[] neighbours = new HexCell[6];
 
             for (int i = 0; i < 6; i++)
             {
                 Vector2Int neighbourCoords = NeighbourCoords(coords, i);
                 if (_cellMap.TryGetValue(neighbourCoords, out HexCell value))
-                    neighbours.Add(value);
+                    neighbours[i] = value;
             }
 
             return neighbours;
