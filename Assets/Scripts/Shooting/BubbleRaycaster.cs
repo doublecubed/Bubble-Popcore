@@ -15,7 +15,8 @@ namespace PopsBubble
         private IPathDrawing _drawer;
 
         [SerializeField] private GameObject _bubbleGhostPrefab;
-
+        [SerializeField] private GameObject _bubblePrefab;
+        
         public GameObject _currentGhost;
         public float _hitAngle;
         public int _hitSegment;
@@ -25,17 +26,24 @@ namespace PopsBubble
 
         private Vector2 _gizmoStart;
         private Vector2 _gizmoEnd;
+
+        private bool _isShooting;
+
+        public Transform _ghostRestingPoint;
+        public HexCell _targetCell;
         
         private void Start()
         {
             _gameFlow = FindObjectOfType<GameFlow>();
             _input = GetComponent<PlayerInput>();
             _drawer = GetComponent<IPathDrawing>();
+
+            _input.OnMouseButtonUp += ShootSignal;
         }
 
         private void Update()
         {
-            if (_gameFlow.GameIsRunning) CastTheFirstRay();   
+            if (_gameFlow.GameIsRunning) CastTheFirstRay();
         }
 
         private void CastTheFirstRay()
@@ -93,13 +101,55 @@ namespace PopsBubble
             _hitSegment = segment;
 
             HexCell[] neighbourCells = _grid.NeighbourCells(fromCell);
-            if (neighbourCells[segment] == null) return;
+            if (neighbourCells[segment] == null || neighbourCells[segment].Value == 0) return;
+
+            _targetCell = neighbourCells[segment];
             
-            _currentGhost.transform.position = _grid.CellPosition(_grid.NeighbourCells(fromCell)[segment].Coordinates);
+            _currentGhost.transform.position = _grid.CellPosition(_targetCell.Coordinates);
 
         }
 
+        public void ResetGhost()
+        {
+            _currentGhost.transform.position = _ghostRestingPoint.position;
+        }
 
+        public void ResetTargetCell()
+        {
+            _targetCell = null;
+        }
+        
+        private void ShootSignal()
+        {
+            ResetGhost();
+            Debug.Log("Shoot!");
+
+            _targetCell.Value = 2;
+            
+            GameObject newBubble = Instantiate(_bubblePrefab, _grid.CellPosition(_targetCell.Coordinates),
+                Quaternion.identity, _grid.transform);
+            newBubble.GetComponent<Bubble>().Initialize(_targetCell);
+            
+            CellSearchResult cellSearchResult = _grid.IterateForValue(_targetCell);
+
+            for (int i = 0; i < cellSearchResult.ValueCells.Count; i++)
+            {
+                cellSearchResult.ValueCells[i].Bubble.Pop();
+            }
+            
+            
+
+            Debug.Log(cellSearchResult.NeighbourCells.Count);
+            
+            for (int i = 0; i < cellSearchResult.NeighbourCells.Count; i++)
+            {
+                
+            }
+            
+            ResetTargetCell();
+        }
+        
+        
         private void OnDrawGizmos()
         {
             if (_gizmoStart == Vector2.zero && _gizmoEnd == Vector2.zero) return;

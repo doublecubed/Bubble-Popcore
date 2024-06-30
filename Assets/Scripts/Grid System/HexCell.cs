@@ -12,6 +12,8 @@ namespace PopsBubble
         public Vector2Int Coordinates { get; private set; }
         public int Value { get; set; }
 
+        public Bubble Bubble { get; set; }
+        
         public Transform objectTransform;
         
         public HexCell(Vector2Int coords, int value = 0)

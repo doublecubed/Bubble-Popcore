@@ -19,6 +19,8 @@ namespace PopsBubble
         
         private Dictionary<Vector2Int, HexCell> _cellMap;
         
+        #region METHODS
+        
         public void GenerateGrid()
         {
             _cellHalfWidth = _cellWidth * 0.5f;
@@ -80,7 +82,48 @@ namespace PopsBubble
             return new Vector2(positionX, positionY);
         }
 
+        public CellSearchResult IterateForValue(HexCell startingCell)
+        {
+            int value = startingCell.Value;
+            List<HexCell> valueCells = new List<HexCell>();
+            List<HexCell> neighbourCells = new List<HexCell>();
+            
+            Queue<HexCell> processQueue = new Queue<HexCell>();
+            
+            processQueue.Enqueue(startingCell);
 
+            while (processQueue.Count > 0)
+            {
+                HexCell nextCell = processQueue.Dequeue();
+
+                HexCell[] neighbours = NeighbourCells(nextCell);
+
+                for (int i = 0; i < 6; i++)
+                {
+                    if (neighbours[i] == null || neighbours[i].Value == 0) continue;
+
+                    if (neighbours[i].Value == value && !valueCells.Contains(neighbours[i]))
+                    {
+                        valueCells.Add(neighbours[i]);
+                        processQueue.Enqueue(neighbours[i]);
+                        continue;
+                    }
+
+                    if (neighbours[i].Value != value && !neighbourCells.Contains(neighbours[i]))
+                    {
+                        neighbourCells.Add(neighbours[i]);
+                    }
+                }
+            }
+
+            CellSearchResult result = new CellSearchResult();
+            result.ValueCells = valueCells;
+            result.NeighbourCells = neighbourCells;
+
+            
+            return result;
+        }
+        
         #region Utility Methods
         private bool OddRow(Vector2Int coords)
         {
@@ -108,5 +151,13 @@ namespace PopsBubble
         
         #endregion
 
+        #endregion
+        
+    }
+
+    public struct CellSearchResult
+    {
+        public List<HexCell> ValueCells;
+        public List<HexCell> NeighbourCells;
     }
 }
