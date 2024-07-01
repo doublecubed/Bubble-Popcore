@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69e9d2df03ea8ed46ab2f3087371762e, type: 3}
   m_Name: DefaultLevel
   m_EditorClassIdentifier: 
-  NumberOfRows: 60
+  NumberOfRows: 11
   MinimumStartingValue: 1
   MaximumStartingValue: 5
   MaximumShootValue: 4

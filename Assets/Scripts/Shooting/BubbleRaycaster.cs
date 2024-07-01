@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 namespace PopsBubble
 {
@@ -37,6 +38,8 @@ namespace PopsBubble
         public IShootValueCalculator _shootCalculator;
         
         public Action OnBubbleShot;
+
+        private BubblePool _pool;
         
         private void Start()
         {
@@ -44,6 +47,7 @@ namespace PopsBubble
             _input = GetComponent<PlayerInput>();
             _drawer = GetComponent<IPathDrawing>();
             _shootCalculator = DependencyContainer.ShootCalculator;
+            _pool = DependencyContainer.BubblePool;
             
             _input.OnMouseButtonUp += ShootSignal;
         }
@@ -108,6 +112,7 @@ namespace PopsBubble
 
             HexCell[] neighbourCells = _grid.NeighbourCells(fromCell);
             if (neighbourCells[segment] == null) return;
+            
 
             _targetCell = neighbourCells[segment];
             
@@ -136,7 +141,7 @@ namespace PopsBubble
             OnBubbleShot?.Invoke();
         }
 
-        public void MakeNewBubble()
+        public async void MakeNewBubble()
         {
             if (_targetCell == null)
             {
@@ -144,15 +149,19 @@ namespace PopsBubble
                 return;
             }
             _targetCell.Value = _shootCalculator.GetValue();
+
+            await _pool.Dispense(_targetCell);
             
-            GameObject newBubble = Instantiate(_bubblePrefab, _grid.CellPosition(_targetCell.Coordinates),
-                Quaternion.identity, _grid.transform);
-            newBubble.GetComponent<Bubble>().Initialize(_targetCell);
-            
+            //await _grid.BringBubble(_targetCell);
+            //
+            // GameObject newBubble = Instantiate(_bubblePrefab, _grid.CellPosition(_targetCell.Coordinates),
+            //     Quaternion.identity, _grid.transform);
+            // newBubble.GetComponent<Bubble>().Initialize(_targetCell);
+            //
 
         }
 
-        public void CalculatePop()
+        public async UniTask CalculatePop()
         {
             
             while (_targetCell != null)
@@ -191,10 +200,14 @@ namespace PopsBubble
                     {
                         _targetCell = reverseNeighbours[i];
                         _targetCell.Value = nextValue;
-                        _grid.SpawnBubble(_targetCell);
+                        await _pool.Dispense(_targetCell);
+                        //_grid.BringBubble(_targetCell);
+                        //_grid.SpawnBubble(_targetCell);
                         break;
                     }
                 }
+
+                await UniTask.Delay(1000);
             }
             
             /*
@@ -218,6 +231,11 @@ namespace PopsBubble
             
             
             ResetTargetCell();
+        }
+
+        public async UniTask CalculateIslands()
+        {
+            
         }
         
         private bool HitsTopBoundary(RaycastHit2D hitInfo)

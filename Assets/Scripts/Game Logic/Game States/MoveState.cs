@@ -16,7 +16,6 @@ namespace PopsBubble
         
         public override void OnEnter()
         {
-            Debug.Log("Entering move state");
             _raycaster.MakeNewBubble();
 
             OnStateComplete?.Invoke();

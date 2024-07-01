@@ -21,12 +21,12 @@ namespace PopsBubble
             _maximumStartingValue = DependencyContainer.GameFlow.LevelProfile.MaximumStartingValue;
         }
         
-        public override void OnEnter()
+        public override async void OnEnter()
         {
             Debug.Log("Entering start state");
             
             _grid.GenerateGrid();
-            _grid.PopulateHexes(_numberOfRows, _minimumStartingValue, _maximumStartingValue);
+            await _grid.PopulateHexes(_numberOfRows, _minimumStartingValue, _maximumStartingValue);
 
             OnStateComplete?.Invoke();
         }

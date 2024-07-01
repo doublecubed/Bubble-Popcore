@@ -11,11 +11,18 @@ namespace PopsBubble
 {
     public class Bubble : MonoBehaviour
     {
+        private BubblePool _pool;
         [SerializeField] private TextMeshPro valueText;
         
         public HexCell Cell { get; private set; }
         public int Value { get; private set; }
 
+        public void SetPool(BubblePool pool)
+        {
+            _pool = pool;
+        }
+        
+        
         public void Initialize(HexCell cell)
         {
             Cell = cell;
@@ -24,12 +31,21 @@ namespace PopsBubble
             valueText.text = GameVar.Value(Value).ToString("F00");
         }
 
+        public void Blank()
+        {
+            Cell = null;
+        }
+
         public void Pop()
         {
             Cell.Bubble = null;
             Cell.Value = 0;
-            Destroy(gameObject);
+            _pool.Recall(this);
         }
-        
+
+        public void Drop()
+        {
+            Pop();
+        }
     }   
 }

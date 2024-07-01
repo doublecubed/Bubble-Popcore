@@ -6,11 +6,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
 
 namespace PopsBubble
 {
     public class HexGrid : MonoBehaviour
     {
+        private BubblePool _pool;
+        
         [SerializeField] private Vector2Int _gridSize;
         private float _cellWidth;
         private float _cellHalfWidth;
@@ -19,11 +23,20 @@ namespace PopsBubble
         [SerializeField] private GameObject _bubblePrefab;
         
         private Dictionary<Vector2Int, HexCell> _cellMap;
+
+        private bool _firstRowOdd;
         
         #region METHODS
-        
+
+        private void Start()
+        {
+
+        }
+
         public void GenerateGrid()
         {
+            _pool = DependencyContainer.BubblePool;
+            
             _cellWidth = GameVar.CellWidth;
             _rowHeight = GameVar.RowHeight();
             
@@ -41,9 +54,13 @@ namespace PopsBubble
             }
         }
 
-        public void PopulateHexes(int numberOfRows, int minimumPower, int maximumPower)
+        public async UniTask PopulateHexes(int numberOfRows, int minimumPower, int maximumPower)
         {
+            _pool.InitializeBubbles(_gridSize.x * _gridSize.y);
+            
             int minimumYRow = _gridSize.y - numberOfRows;
+
+            List<UniTask> bubbleTasks = new List<UniTask>();
             
             foreach (KeyValuePair<Vector2Int, HexCell> pair in _cellMap)
             {
@@ -51,14 +68,41 @@ namespace PopsBubble
                 {
                     int value = Random.Range(minimumPower, maximumPower);
                     pair.Value.Value = value;
-                    SpawnBubble(pair.Value);
-                    // GameObject bubble = Instantiate(_bubblePrefab, transform);
-                    // bubble.transform.position = CellPosition(pair.Key);
-                    // bubble.GetComponent<Bubble>().Initialize(pair.Value);
+                    bubbleTasks.Add(_pool.Dispense(pair.Value));
+                    //SpawnBubble(pair.Value);
                 }
             }
+
+            await UniTask.WhenAll(bubbleTasks);
         }
 
+        public async UniTask BringBubble(HexCell targetHex)
+        {
+            GameObject bubble = Instantiate(_bubblePrefab, transform);
+            bubble.GetComponent<Bubble>().Initialize(targetHex);
+            bubble.transform.position = CellPosition(targetHex.Coordinates);
+            bubble.transform.localScale = Vector2.zero;
+
+            await bubble.transform.DOScale(Vector2.one, 0.5f).WithCancellation(this.GetCancellationTokenOnDestroy());
+        }
+
+        public async UniTask MoveGridDown()
+        {
+            for (int i = 0; i < _gridSize.x; i++)
+            {
+                Vector2Int checkCoordinates = new Vector2Int(i, 0);
+                if (_cellMap[checkCoordinates].Value != 0) return;
+            }
+            
+            _firstRowOdd = !_firstRowOdd;
+            for (int i = 0; i < _gridSize.y - 1; i++)
+            {
+                
+            }
+            
+            
+        }
+        
         public void SpawnBubble(HexCell targetHex)
         {
             GameObject bubble = Instantiate(_bubblePrefab, transform);
@@ -139,7 +183,7 @@ namespace PopsBubble
         #region Utility Methods
         private bool OddRow(Vector2Int coords)
         {
-            return coords.y % 2 == 1;
+            return coords.y % 2 == (_firstRowOdd ? 1 : 0);
         }
         
         private Vector2Int NeighbourCoords(Vector2Int coords, int index)

@@ -9,6 +9,7 @@ namespace PopsBubble
 {
     public static class GameVar
     {
+        // Gameplay variables
         private const int BaseValue = 2;
 
         public const float CellWidth = 1f;
@@ -22,5 +23,9 @@ namespace PopsBubble
         {
             return (int)Mathf.Pow(BaseValue, power);
         }
+        
+        // Animation and Tweening variables
+
+        public const float BubbleAppearDuration = 0.5f;
     }
 }
