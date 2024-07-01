@@ -11,6 +11,13 @@ namespace PopsBubble
     {
         private const int BaseValue = 2;
 
+        public const float CellWidth = 1f;
+
+        public static float RowHeight()
+        {
+            return CellWidth * 0.5f * Mathf.Sqrt(3);
+        }
+        
         public static int Value(int power)
         {
             return (int)Mathf.Pow(BaseValue, power);

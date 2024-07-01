@@ -4,6 +4,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace PopsBubble
@@ -27,9 +28,6 @@ namespace PopsBubble
         
         private HexCell _hitCell;
         private HexCell _fromCell;
-
-        private Vector2 _gizmoStart;
-        private Vector2 _gizmoEnd;
 
         private bool _isShooting;
 
@@ -71,6 +69,12 @@ namespace PopsBubble
             List<Vector2> hitPoints = new List<Vector2> { previousHitInfo.point };
 
             int hitLayer = previousHitInfo.transform.gameObject.layer;
+
+            if (HitsTopBoundary(previousHitInfo))
+            {
+                
+            }
+            
             while (hitLayer == 6 || hitLayer == 7)
             {
                 Vector2 bounceDirection = new Vector2(-previousDirection.x, previousDirection.y);
@@ -95,8 +99,6 @@ namespace PopsBubble
 
         private void ShowTargetCell(HexCell fromCell, Vector2 hitPoint)
         {
-            _gizmoStart = _grid.CellPosition(fromCell.Coordinates);
-            _gizmoEnd = hitPoint;
             
             Vector2 hitDirection = (hitPoint - _grid.CellPosition(fromCell.Coordinates)).normalized;
             float hitAngle = Vector2.SignedAngle(Vector2.left, hitDirection) + 180;
@@ -152,29 +154,73 @@ namespace PopsBubble
 
         public void CalculatePop()
         {
+            /*
+            while (_targetCell != null)
+            {
+                CellSearchResult initialSearchResult = _grid.IterateForValue(_targetCell);
+                int chainLength = initialSearchResult.ValueCells.Count;
+                int nextValue = _targetCell.Value * chainLength;
+
+                if (initialSearchResult.ValueCells.Count <= 1) break;
+                
+                for (int i = 0; i < initialSearchResult.ValueCells.Count; i++)
+                {
+                    initialSearchResult.ValueCells[i].Bubble.Pop();
+                }
+                
+                HexCell nextChainHead = initialSearchResult.NeighbourCells[0];
+                int nextChainLength = 0;
+                for (int i = 0; i < initialSearchResult.NeighbourCells.Count; i++)
+                {
+                    if (initialSearchResult.NeighbourCells[i].Value != nextValue) continue;
+
+                    CellSearchResult nextSearchResult = _grid.IterateForValue(initialSearchResult.NeighbourCells[i]);
+                    if (nextSearchResult.ValueCells.Count > nextChainLength)
+                    {
+                        nextChainLength = nextSearchResult.ValueCells.Count;
+                        nextChainHead = initialSearchResult.NeighbourCells[i];
+                    }
+                }
+
+                HexCell spawnCell = initialSearchResult.ValueCells[0];
+                HexCell[] reverseNeighbours = _grid.NeighbourCells(nextChainHead);
+
+                for (int i = 0; i < 6; i++)
+                {
+                    if (reverseNeighbours[i] != null && initialSearchResult.ValueCells.Contains(reverseNeighbours[i])
+                    spawnCell = reverseNeighbours[i];
+                }
+                
+                
+
+            }
+            */
+            
+            // Scan from the first cell
             CellSearchResult cellSearchResult = _grid.IterateForValue(_targetCell);
 
+            // Pop the cells that match the value
             for (int i = 0; i < cellSearchResult.ValueCells.Count; i++)
             {
                 cellSearchResult.ValueCells[i].Bubble.Pop();
             }
 
-            for (int i = 0; i < cellSearchResult.NeighbourCells.Count; i++)
-            {
-                
-            }
+            // Calculate the new value
+            int newValue = _targetCell.Value * cellSearchResult.ValueCells.Count;
+
+            // Search all the neighbours. Pass the ones that don't match the new value
+
+            
+            
+            
+            
             
             ResetTargetCell();
         }
         
-        private void OnDrawGizmos()
+        private bool HitsTopBoundary(RaycastHit2D hitInfo)
         {
-            if (_gizmoStart == Vector2.zero && _gizmoEnd == Vector2.zero) return;
-            
-            Gizmos.color = Color.red;
-            
-            Gizmos.DrawLine(_gizmoStart, _gizmoEnd);
-            
+            return hitInfo.transform.gameObject.layer == 8;
         }
     }
 }

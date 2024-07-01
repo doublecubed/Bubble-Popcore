@@ -1000,8 +1000,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3802e99b0569f8e46aad28c758412cf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gridSize: {x: 6, y: 12}
-  _cellWidth: 1
+  _gridSize: {x: 6, y: 65}
   _bubblePrefab: {fileID: 7615426999544883533, guid: 4117eb8938344574686ff0d3c013b3eb, type: 3}
 --- !u!4 &1482849798
 Transform:
@@ -1388,7 +1387,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1919834574
 Transform:
   m_ObjectHideFlags: 0

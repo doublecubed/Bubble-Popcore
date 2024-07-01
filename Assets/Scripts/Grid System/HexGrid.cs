@@ -12,8 +12,9 @@ namespace PopsBubble
     public class HexGrid : MonoBehaviour
     {
         [SerializeField] private Vector2Int _gridSize;
-        [SerializeField] private float _cellWidth;
+        private float _cellWidth;
         private float _cellHalfWidth;
+        private float _rowHeight;
 
         [SerializeField] private GameObject _bubblePrefab;
         
@@ -23,6 +24,9 @@ namespace PopsBubble
         
         public void GenerateGrid()
         {
+            _cellWidth = GameVar.CellWidth;
+            _rowHeight = GameVar.RowHeight();
+            
             _cellHalfWidth = _cellWidth * 0.5f;
             _cellMap = new Dictionary<Vector2Int, HexCell>();
             
@@ -47,11 +51,19 @@ namespace PopsBubble
                 {
                     int value = Random.Range(minimumPower, maximumPower);
                     pair.Value.Value = value;
-                    GameObject bubble = Instantiate(_bubblePrefab, transform);
-                    bubble.transform.position = CellPosition(pair.Key);
-                    bubble.GetComponent<Bubble>().Initialize(pair.Value);
+                    SpawnBubble(pair.Value);
+                    // GameObject bubble = Instantiate(_bubblePrefab, transform);
+                    // bubble.transform.position = CellPosition(pair.Key);
+                    // bubble.GetComponent<Bubble>().Initialize(pair.Value);
                 }
             }
+        }
+
+        public void SpawnBubble(HexCell targetHex)
+        {
+            GameObject bubble = Instantiate(_bubblePrefab, transform);
+            bubble.transform.position = CellPosition(targetHex.Coordinates);
+            bubble.GetComponent<Bubble>().Initialize(targetHex);
         }
         
         public HexCell[] NeighbourCells(HexCell cell)
@@ -77,7 +89,7 @@ namespace PopsBubble
         public Vector2 CellPosition(Vector2Int coords)
         {
             float positionX = transform.position.x + (coords.x * _cellWidth) + (OddRow(coords) ? _cellHalfWidth : 0f);
-            float positionY = transform.position.y + coords.y * (_cellHalfWidth * Mathf.Sqrt(3));
+            float positionY = transform.position.y + coords.y * (_rowHeight);
 
             return new Vector2(positionX, positionY);
         }
