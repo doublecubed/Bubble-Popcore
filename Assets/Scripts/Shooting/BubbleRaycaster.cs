@@ -154,12 +154,12 @@ namespace PopsBubble
 
         public void CalculatePop()
         {
-            /*
+            
             while (_targetCell != null)
             {
                 CellSearchResult initialSearchResult = _grid.IterateForValue(_targetCell);
                 int chainLength = initialSearchResult.ValueCells.Count;
-                int nextValue = _targetCell.Value * chainLength;
+                int nextValue = _targetCell.Value + (chainLength - 1);
 
                 if (initialSearchResult.ValueCells.Count <= 1) break;
                 
@@ -182,20 +182,22 @@ namespace PopsBubble
                     }
                 }
 
-                HexCell spawnCell = initialSearchResult.ValueCells[0];
+                _targetCell = null;
                 HexCell[] reverseNeighbours = _grid.NeighbourCells(nextChainHead);
 
                 for (int i = 0; i < 6; i++)
                 {
-                    if (reverseNeighbours[i] != null && initialSearchResult.ValueCells.Contains(reverseNeighbours[i])
-                    spawnCell = reverseNeighbours[i];
+                    if (reverseNeighbours[i] != null && initialSearchResult.ValueCells.Contains(reverseNeighbours[i]))
+                    {
+                        _targetCell = reverseNeighbours[i];
+                        _targetCell.Value = nextValue;
+                        _grid.SpawnBubble(_targetCell);
+                        break;
+                    }
                 }
-                
-                
-
             }
-            */
             
+            /*
             // Scan from the first cell
             CellSearchResult cellSearchResult = _grid.IterateForValue(_targetCell);
 
@@ -209,7 +211,7 @@ namespace PopsBubble
             int newValue = _targetCell.Value * cellSearchResult.ValueCells.Count;
 
             // Search all the neighbours. Pass the ones that don't match the new value
-
+            */
             
             
             
