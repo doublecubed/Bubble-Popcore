@@ -37,7 +37,7 @@ namespace PopsBubble
             {
                 GameObject bubble = Instantiate(_bubblePrefab, transform.position, Quaternion.identity, transform);
                 Bubble bubbleScript = bubble.GetComponent<Bubble>();
-                bubbleScript.SetPool(this);
+                bubbleScript.SetReferences(this, _grid);
                 _bubbleQueue.Enqueue(bubbleScript);
             }
         }
@@ -45,13 +45,12 @@ namespace PopsBubble
         public async UniTask Dispense(HexCell cell)
         {
             Bubble nextBubble = _bubbleQueue.Dequeue();
+            Transform bubbleTransform = nextBubble.transform;
+            bubbleTransform.parent = _grid.transform;
+            bubbleTransform.position = _grid.CellPosition(cell);
+            
             nextBubble.Initialize(cell);
 
-            Transform bubbleTransform = nextBubble.transform;
-
-            bubbleTransform.parent = _grid.transform;
-            bubbleTransform.position = _grid.CellPosition(cell.Coordinates);
-            
             bubbleTransform.localScale = Vector2.zero;
             await bubbleTransform.DOScale(Vector2.one, _tweenDuration).WithCancellation(_ct);
         }

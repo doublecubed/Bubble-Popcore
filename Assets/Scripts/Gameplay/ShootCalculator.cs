@@ -26,8 +26,6 @@ namespace PopsBubble
         {
             _currentValue = _nextValue == 0 ? RandomShootValue() : _nextValue;
             _nextValue = RandomShootValue();
-            
-            Debug.Log($"Calculated value si {_currentValue}. Next value is {_nextValue}");
         }
 
         public int GetValue()
@@ -42,8 +40,6 @@ namespace PopsBubble
 
         private int RandomShootValue()
         {
-            Debug.Log($"Value being calculated between {_minValue} and {_maxValue}");
-            
             return Random.Range(_minValue, _maxValue + 1);
         }
     }

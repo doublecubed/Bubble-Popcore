@@ -17,7 +17,6 @@ namespace PopsBubble
         
         public override void OnEnter()
         {
-            Debug.Log("Entering shoot state");
         }
 
         public override void OnUpdate()

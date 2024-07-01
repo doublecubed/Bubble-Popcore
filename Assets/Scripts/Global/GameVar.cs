@@ -19,7 +19,7 @@ namespace PopsBubble
             return CellWidth * 0.5f * Mathf.Sqrt(3);
         }
         
-        public static int Value(int power)
+        public static int DisplayValue(int power)
         {
             return (int)Mathf.Pow(BaseValue, power);
         }
@@ -27,5 +27,7 @@ namespace PopsBubble
         // Animation and Tweening variables
 
         public const float BubbleAppearDuration = 0.5f;
+
+        public const float GridDropDuration = 0.5f;
     }
 }

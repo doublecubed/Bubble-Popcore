@@ -24,8 +24,6 @@ namespace PopsBubble
         
         public override void OnEnter()
         {
-            Debug.Log("Entering prepare state");
-            
             _shootCalculator.CalculateValues();
             int shootValue = _shootCalculator.GetValue();
             int nextValue = _shootCalculator.GetNextValue();

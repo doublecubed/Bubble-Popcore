@@ -135,8 +135,7 @@ namespace PopsBubble
             if (!(_gameFlow.CurrentGameState() is ShootState)) return; 
             
             ResetGhost();
-            Debug.Log("Shoot!");
-
+            
             _drawer.ClearPath();
             OnBubbleShot?.Invoke();
         }
@@ -174,6 +173,8 @@ namespace PopsBubble
                 
                 for (int i = 0; i < initialSearchResult.ValueCells.Count; i++)
                 {
+                    Debug.Log($"bubble pop iteration is {i}");
+                    Debug.Log($"Coordinates are {initialSearchResult.ValueCells[i].Coordinates}");
                     initialSearchResult.ValueCells[i].Bubble.Pop();
                 }
                 

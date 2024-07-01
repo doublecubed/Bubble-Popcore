@@ -17,7 +17,6 @@ namespace PopsBubble
 
         public override async void OnEnter()
         {
-            Debug.Log("Entering pop state");
             await _raycaster.CalculatePop();
             await _raycaster.CalculateIslands();
             

@@ -6,20 +6,27 @@ using System.Collections.Generic;
 using System.Globalization;
 using TMPro;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
 
 namespace PopsBubble
 {
     public class Bubble : MonoBehaviour
     {
         private BubblePool _pool;
+        private HexGrid _grid;
+        private float _dropDuration;
+        
         [SerializeField] private TextMeshPro valueText;
         
         public HexCell Cell { get; private set; }
         public int Value { get; private set; }
 
-        public void SetPool(BubblePool pool)
+        public void SetReferences(BubblePool pool, HexGrid grid)
         {
             _pool = pool;
+            _grid = grid;
+            _dropDuration = GameVar.GridDropDuration;
         }
         
         
@@ -28,7 +35,7 @@ namespace PopsBubble
             Cell = cell;
             Cell.Bubble = this;
             Value = cell.Value;
-            valueText.text = GameVar.Value(Value).ToString("F00");
+            valueText.text = GameVar.DisplayValue(Value).ToString("F00");
         }
 
         public void Blank()
@@ -36,6 +43,15 @@ namespace PopsBubble
             Cell = null;
         }
 
+        public async UniTask DropDown(HexCell newCell)
+        {
+            Cell = newCell;
+            Value = newCell.Value;
+            newCell.Bubble = this;
+
+            await transform.DOMove(_grid.CellPosition(Cell), _dropDuration);
+        }
+        
         public void Pop()
         {
             Cell.Bubble = null;
@@ -43,7 +59,7 @@ namespace PopsBubble
             _pool.Recall(this);
         }
 
-        public void Drop()
+        public void Detach()
         {
             Pop();
         }
