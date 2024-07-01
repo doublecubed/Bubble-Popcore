@@ -1,3 +1,6 @@
+// Onur Ereren - June 2024
+// Popcore case
+
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -18,7 +21,7 @@ namespace PopsBubble
             Cell = cell;
             Cell.Bubble = this;
             Value = cell.Value;
-            valueText.text = Mathf.Pow(2, Value).ToString("F00");
+            valueText.text = GameVar.Value(Value).ToString("F00");
         }
 
         public void Pop()

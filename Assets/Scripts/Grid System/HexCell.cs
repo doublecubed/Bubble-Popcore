@@ -1,5 +1,5 @@
 // Onur Ereren - June 2024
-// Popcore case study
+// Popcore case
 
 using System.Collections;
 using System.Collections.Generic;

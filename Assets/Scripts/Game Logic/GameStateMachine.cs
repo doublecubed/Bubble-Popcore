@@ -1,5 +1,8 @@
+// Onur Ereren - June 2024
+// Popcore case
+
 // This state machine is not flexible or modular; it is created for this specific game.
-// I normally go a GameObject route for each state so that I can physically see what state is enabled
+// I normally go a GameObject route for each state so that I can visually see what state is enabled
 // on Hierarchy, but since this is a very straightforward progression of states, I did not do that.
 // (Also didn't seem very ECS-like :) )
 
@@ -20,6 +23,8 @@ namespace PopsBubble
         private GameState _popState;
         private GameState _tidyState;
         private GameState _endState;
+
+        private GameFlow _gameFlow;
         
         #endregion
         
@@ -31,8 +36,10 @@ namespace PopsBubble
         
         #region CONSTRUCTOR
 
-        public GameStateMachine()
+        public GameStateMachine(GameFlow gameFlow)
         {
+            _gameFlow = gameFlow;
+            
             _startState = new StartState();
             _prepareState = new PrepareState();
             _shootState = new ShootState();

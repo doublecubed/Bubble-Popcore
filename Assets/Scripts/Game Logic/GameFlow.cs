@@ -1,22 +1,23 @@
-
+// Onur Ereren - June 2024
+// Popcore case
 
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace PopsBubble
 {
-
     public class GameFlow : MonoBehaviour
     {
         #region REFERENCES
 
         public static GameFlow Instance;
-        
-        [SerializeField] private HexGrid _grid;
 
         private GameStateMachine _stateMachine;
+        
+        
         
         #endregion
         
@@ -24,14 +25,13 @@ namespace PopsBubble
 
         #region Level
 
-        [SerializeField] private LevelProfile _levelProfile;//What power of 2 can a cell take at the start
+        [field: SerializeField] public LevelProfile LevelProfile { get; private set; }
         
         #endregion
         
         public bool GameIsRunning { get; private set; }
         
         #endregion
-
 
         #region MONOBEHAVIOUR
 
@@ -64,22 +64,15 @@ namespace PopsBubble
         {
             GameIsRunning = true;
 
-            GenerateStateMachine();
-            GeneratePlayArea();
+            StartStateMachine();
         }
 
-        private void GenerateStateMachine()
+        private void StartStateMachine()
         {
-            _stateMachine = new GameStateMachine();
+            _stateMachine = new GameStateMachine(this);
             _stateMachine.StartMachine();
         }
 
-        private void GeneratePlayArea()
-        {
-            _grid.GenerateGrid();
-            _grid.PopulateHexes(_levelProfile.NumberOfRows, _levelProfile.MinimumStartingValue);
-        }
-        
         public GameState CurrentGameState()
         {
             return _stateMachine.CurrentState;

@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NumberOfRows: 5
   MinimumStartingValue: 1
-  MaximumShootValue: 5
+  MaximumStartingValue: 5
+  MaximumShootValue: 4

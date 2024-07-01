@@ -1,5 +1,5 @@
 // Onur Ereren - June 2024
-// Popcore Case Study
+// Popcore case
 
 using System;
 using System.Collections;
@@ -37,7 +37,7 @@ namespace PopsBubble
             }
         }
 
-        public void PopulateHexes(int numberOfRows, int maximumPower)
+        public void PopulateHexes(int numberOfRows, int minimumPower, int maximumPower)
         {
             int minimumYRow = _gridSize.y - numberOfRows;
             
@@ -45,7 +45,7 @@ namespace PopsBubble
             {
                 if (pair.Key.y >= minimumYRow)
                 {
-                    int value = Random.Range(1, maximumPower);
+                    int value = Random.Range(minimumPower, maximumPower);
                     pair.Value.Value = value;
                     GameObject bubble = Instantiate(_bubblePrefab, transform);
                     bubble.transform.position = CellPosition(pair.Key);
