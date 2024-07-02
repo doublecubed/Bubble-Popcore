@@ -42,11 +42,22 @@ namespace PopsBubble
         #region METHODS
 
         #region Grid Generation
+
+        public void Initialize()
+        {
+            _pool = DependencyContainer.BubblePool;
+            _flow = DependencyContainer.GameFlow;
+            
+            _cellWidth = GameVar.CellWidth;
+            _rowHeight = GameVar.RowHeight();
+            _cellHalfWidth = _cellWidth * 0.5f;
+
+            _minNewCellValue = _flow.LevelProfile.MinimumStartingValue;
+            _maxNewCellValue = _flow.LevelProfile.MaximumStartingValue;
+        }
         
         public void GenerateGrid()
         {
-            SetReferencesAndVariables();
-
             _cellMap = new Dictionary<Vector2Int, HexCell>();
             
             for (int i = 0; i < _gridSize.x; i++)
@@ -69,33 +80,18 @@ namespace PopsBubble
             
             int minimumYRow = _gridSize.y - numberOfRows;
 
-            List<UniTask> bubbleTasks = new List<UniTask>();
-            
+            List<UniTask> spawnTasks = new List<UniTask>();
             foreach (KeyValuePair<Vector2Int, HexCell> pair in _cellMap)
             {
                 if (pair.Key.y >= minimumYRow)
                 {
                     int value = Random.Range(minimumPower, maximumPower);
-                    pair.Value.SetData(value);
+                    spawnTasks.Add(pair.Value.SetData(value));
                 }
             }
-
-            await UniTask.WhenAll(bubbleTasks);
+            await UniTask.WhenAll(spawnTasks);
         }
-
-        private void SetReferencesAndVariables()
-        {
-            _pool = DependencyContainer.BubblePool;
-            _flow = DependencyContainer.GameFlow;
-            
-            _cellWidth = GameVar.CellWidth;
-            _rowHeight = GameVar.RowHeight();
-            _cellHalfWidth = _cellWidth * 0.5f;
-
-            _minNewCellValue = _flow.LevelProfile.MinimumStartingValue;
-            _maxNewCellValue = _flow.LevelProfile.MaximumStartingValue;
-        }
-
+        
         private HexCell GenerateHexCell(Vector2Int coords, Vector2 pos)
         {
             GameObject hexCell = Instantiate(_hexCellPrefab, transform);
@@ -258,6 +254,42 @@ namespace PopsBubble
             }
             await UniTask.WhenAll(dropTasks);
         }
+
+        public async UniTask MoveGridUp()
+        {
+            _firstRowOdd = !_firstRowOdd;
+            
+            // Clear the top row
+            for (int i = 0; i < _gridSize.x; i++)
+            {
+                Vector2Int coords = new Vector2Int(i, _gridSize.y - 1);
+                _cellMap[coords].Clear(true);
+            }
+            
+            // Transfer all cells up
+            for (int i = _gridSize.y - 2; i >= 0; i--)
+            {
+                for (int j = 0; j < _gridSize.x; j++)
+                {
+                    Vector2Int bottomCoords = new Vector2Int(j, i);
+                    Vector2Int topCoords = new Vector2Int(j, i + 1);
+
+                    HexCell targetCell = _cellMap[topCoords];
+                    HexCell sourceCell = _cellMap[bottomCoords];
+                    
+                    targetCell.TransferData(sourceCell);
+                    sourceCell.Clear();
+                }
+            }
+
+            // Move the bubbles to new locations
+            List<UniTask> dropTasks = new List<UniTask>();
+            foreach (KeyValuePair<Vector2Int, HexCell> pair in _cellMap)
+            {
+                dropTasks.Add(pair.Value.UpdateForDropDown());
+            }
+            await UniTask.WhenAll(dropTasks);
+        }
         
         #endregion
         
@@ -305,6 +337,8 @@ namespace PopsBubble
 
         #endregion
 
+        #region EDITOR VISUALISATION
+        
         private void OnDrawGizmos()
         {
             if (Application.isPlaying)
@@ -314,11 +348,24 @@ namespace PopsBubble
 
                 foreach (KeyValuePair<Vector2Int, HexCell> pair in _cellMap)
                 {
-                    WriteDebugTextTest.DrawString(pair.Value.Value.ToString(), CellPosition(pair.Key), Color.green);
+                    DrawString(pair.Value.Value.ToString(), CellPosition(pair.Key), Color.green);
                 }
             }
         }
         
+        // Method to draw strings on Scene camera.
+        // Obtained from: https://gist.github.com/Arakade/9dd844c2f9c10e97e3d0
+        public static void DrawString(string text, Vector3 worldPos, Color? colour = null) {
+            UnityEditor.Handles.BeginGUI();
+            if (colour.HasValue) GUI.color = colour.Value;
+            var view = UnityEditor.SceneView.currentDrawingSceneView;
+            Vector3 screenPos = view.camera.WorldToScreenPoint(worldPos);
+            Vector2 size = GUI.skin.label.CalcSize(new GUIContent(text));
+            GUI.Label(new Rect(screenPos.x - (size.x / 2), -screenPos.y + view.position.height + 4, size.x, size.y), text);
+            UnityEditor.Handles.EndGUI();
+        }
+        
+        #endregion
     }
 
     public struct CellSearchResult

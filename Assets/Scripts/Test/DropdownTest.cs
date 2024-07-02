@@ -15,10 +15,20 @@ public class DropdownTest : MonoBehaviour
         {
             await MoveDown();
         }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            await MoveUp();
+        }
     }
 
     private async UniTask MoveDown()
     {
         await grid.MoveGridDown();        
+    }
+
+    private async UniTask MoveUp()
+    {
+        await grid.MoveGridUp();
     }
 }

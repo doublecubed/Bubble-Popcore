@@ -63,10 +63,14 @@ namespace PopsBubble
         }
 
         // This is for immediate clearing. Used in dropdown, to clear the top row before writing in new data from above
-        public void Clear()
+        public void Clear(bool recallBubble = false)
         {
             Value = 0;
             _hexCollider.enabled = false;
+            if (Bubble != null && recallBubble)
+            {
+                _pool.Recall(Bubble);
+            }
             Bubble = null;
         }
         
@@ -100,9 +104,9 @@ namespace PopsBubble
             Bubble = null;
         }
 
-        public async UniTask DropBubble()
+        public async UniTask DetachBubble()
         {
-            
+            await PopBubble(); // Currently the same functionality
         }
         
         #endregion

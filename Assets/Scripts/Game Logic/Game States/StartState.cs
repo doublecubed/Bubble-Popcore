@@ -23,7 +23,7 @@ namespace PopsBubble
         
         public override async void OnEnter()
         {
-            
+            _grid.Initialize();
             _grid.GenerateGrid();
             await _grid.PopulateHexes(_numberOfRows, _minimumStartingValue, _maximumStartingValue);
 
