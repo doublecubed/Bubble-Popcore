@@ -148,7 +148,7 @@ namespace PopsBubble
                 Debug.Log("target cell is null");
                 return;
             }
-            await _targetCell.SetData(_shootCalculator.GetValue());
+            await _targetCell.SetStartingData(_shootCalculator.GetValue());
         }
 
         public async UniTask CalculatePop()
@@ -189,7 +189,7 @@ namespace PopsBubble
                     if (reverseNeighbours[i] != null && initialSearchResult.ValueCells.Contains(reverseNeighbours[i]))
                     {
                         _targetCell = reverseNeighbours[i];
-                        await _targetCell.SetData(nextValue);
+                        await _targetCell.SetStartingData(nextValue);
                         break;
                     }
                 }

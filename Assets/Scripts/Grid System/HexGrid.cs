@@ -86,7 +86,7 @@ namespace PopsBubble
                 if (pair.Key.y >= minimumYRow)
                 {
                     int value = Random.Range(minimumPower, maximumPower);
-                    spawnTasks.Add(pair.Value.SetData(value));
+                    spawnTasks.Add(pair.Value.SetStartingData(value));
                 }
             }
             await UniTask.WhenAll(spawnTasks);
@@ -215,7 +215,7 @@ namespace PopsBubble
         
         #endregion
         
-        #region CellMovement
+        #region Cell Manipulation
         public async UniTask MoveGridDown()
         {
             if (!FirstRowEmpty()) return;
@@ -230,11 +230,7 @@ namespace PopsBubble
                     Vector2Int topCoords = new Vector2Int(j, i);
                     Vector2Int bottomCoords = new Vector2Int(j, i - 1);
 
-                    HexCell targetCell = _cellMap[bottomCoords];
-                    HexCell sourceCell = _cellMap[topCoords];
-                    
-                    targetCell.TransferData(sourceCell);
-                    sourceCell.Clear();
+                    TransferCellData(topCoords, bottomCoords);
                 }
             }
 
@@ -244,13 +240,13 @@ namespace PopsBubble
             for (int i = 0; i < _gridSize.x; i++)
             {
                 Vector2Int coords = new Vector2Int(i, _gridSize.y - 1);
-                dropTasks.Add(_cellMap[coords].SetData(RandomStartingValue()));
+                dropTasks.Add(_cellMap[coords].SetStartingData(RandomStartingValue()));
             }
             
             // Move the bubbles to new locations
             foreach (KeyValuePair<Vector2Int, HexCell> pair in _cellMap)
             {
-                dropTasks.Add(pair.Value.UpdateForDropDown());
+                dropTasks.Add(pair.Value.UpdateForRowMovement());
             }
             await UniTask.WhenAll(dropTasks);
         }
@@ -274,11 +270,7 @@ namespace PopsBubble
                     Vector2Int bottomCoords = new Vector2Int(j, i);
                     Vector2Int topCoords = new Vector2Int(j, i + 1);
 
-                    HexCell targetCell = _cellMap[topCoords];
-                    HexCell sourceCell = _cellMap[bottomCoords];
-                    
-                    targetCell.TransferData(sourceCell);
-                    sourceCell.Clear();
+                    TransferCellData(bottomCoords, topCoords);
                 }
             }
 
@@ -286,9 +278,35 @@ namespace PopsBubble
             List<UniTask> dropTasks = new List<UniTask>();
             foreach (KeyValuePair<Vector2Int, HexCell> pair in _cellMap)
             {
-                dropTasks.Add(pair.Value.UpdateForDropDown());
+                dropTasks.Add(pair.Value.UpdateForRowMovement());
             }
             await UniTask.WhenAll(dropTasks);
+        }
+
+        public async UniTask ScrambleGrid()
+        {
+            List<ScrambleData> scrambleData = new List<ScrambleData>();
+            List<HexCell> occupiedCells = new List<HexCell>();
+
+            foreach (KeyValuePair<Vector2Int, HexCell> pair in _cellMap)
+            {
+                if (pair.Value.Value == 0) continue;
+
+                occupiedCells.Add(pair.Value);
+                scrambleData.Add(GenerateScrambleData(pair.Value));
+            }
+
+            List<UniTask> scrambleTasks = new List<UniTask>();
+            foreach (var cell in occupiedCells)
+            {
+                int randomIndex = Random.Range(0, scrambleData.Count);
+                cell.AssignData(scrambleData[randomIndex]);
+                scrambleData.RemoveAt(randomIndex);
+                scrambleTasks.Add(cell.UpdateForRowMovement());
+            }
+
+            await UniTask.WhenAll(scrambleTasks);
+
         }
         
         #endregion
@@ -331,6 +349,23 @@ namespace PopsBubble
         private int RandomStartingValue()
         {
             return Random.Range(_minNewCellValue, _maxNewCellValue + 1);
+        }
+
+        private void TransferCellData(Vector2Int fromCoords, Vector2Int toCoords)
+        {
+            HexCell targetCell = _cellMap[toCoords];
+            HexCell sourceCell = _cellMap[fromCoords];
+                    
+            targetCell.TransferData(sourceCell);
+            sourceCell.Clear();
+        }
+
+        private ScrambleData GenerateScrambleData(HexCell cell)
+        {
+            ScrambleData data = new ScrambleData();
+            data.Value = cell.Value;
+            data.Bubble = cell.Bubble;
+            return data;
         }
         
         #endregion

@@ -11,14 +11,19 @@ public class DropdownTest : MonoBehaviour
     // Update is called once per frame
     private async void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.W))
         {
-            await MoveDown();
+            await MoveUp();
         }
 
         if (Input.GetKeyDown(KeyCode.S))
         {
-            await MoveUp();
+            await MoveDown();
+        }
+        
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            await Scramble();
         }
     }
 
@@ -30,5 +35,10 @@ public class DropdownTest : MonoBehaviour
     private async UniTask MoveUp()
     {
         await grid.MoveGridUp();
+    }
+
+    private async UniTask Scramble()
+    {
+        await grid.ScrambleGrid();
     }
 }

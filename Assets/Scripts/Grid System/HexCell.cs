@@ -52,7 +52,7 @@ namespace PopsBubble
         #region Data Manipulation
         
         // This is to be used for level start, and top row Bubble creation.
-        public async UniTask SetData(int value)
+        public async UniTask SetStartingData(int value)
         {
             Value = value;
             if (value != 0)
@@ -62,7 +62,7 @@ namespace PopsBubble
             }
         }
 
-        // This is for immediate clearing. Used in dropdown, to clear the top row before writing in new data from above
+        // This is for immediate clearing. Used in dropdown and move up, to clear the row before writing in new data
         public void Clear(bool recallBubble = false)
         {
             Value = 0;
@@ -74,7 +74,7 @@ namespace PopsBubble
             Bubble = null;
         }
         
-        // Transferring data before dropdown
+        // Transferring data before row movement
         public void TransferData(HexCell fromCell)
         {
             Value = fromCell.Value;
@@ -82,7 +82,14 @@ namespace PopsBubble
             _hexCollider.enabled = fromCell.Value != 0;
         }
         
-        public async UniTask UpdateForDropDown()
+        // Assigning data directly, used for scrambling
+        public void AssignData(ScrambleData scrambleData)
+        {
+            Value = scrambleData.Value;
+            Bubble = scrambleData.Bubble;
+        }
+        
+        public async UniTask UpdateForRowMovement()
         {
             Position = _grid.CellPosition(Coordinates);
             transform.position = Position;
@@ -112,5 +119,11 @@ namespace PopsBubble
         #endregion
         
         #endregion
+    }
+
+    public struct ScrambleData
+    {
+        public int Value;
+        public Bubble Bubble;
     }
 }
