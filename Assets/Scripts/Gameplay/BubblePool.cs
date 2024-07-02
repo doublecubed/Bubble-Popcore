@@ -11,6 +11,7 @@ using System.Threading;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Random = UnityEngine.Random;
 
 namespace PopsBubble
 {
@@ -45,11 +46,13 @@ namespace PopsBubble
         public async UniTask Dispense(HexCell cell)
         {
             Bubble nextBubble = _bubbleQueue.Dequeue();
+            cell.Bubble = nextBubble;
+            
             Transform bubbleTransform = nextBubble.transform;
             bubbleTransform.parent = _grid.transform;
             bubbleTransform.position = _grid.CellPosition(cell);
             
-            nextBubble.Initialize(cell);
+            nextBubble.Initialize(new Color(Random.Range(0f,1f), Random.Range(0f,1f), Random.Range(0f,1f), 1f), cell.Value);
 
             bubbleTransform.localScale = Vector2.zero;
             await bubbleTransform.DOScale(Vector2.one, _tweenDuration).WithCancellation(_ct);
@@ -58,7 +61,6 @@ namespace PopsBubble
         public void Recall(Bubble bubble)
         {
             _bubbleQueue.Enqueue(bubble);
-            bubble.Blank();
 
             bubble.transform.parent = transform;
             bubble.transform.position = transform.position;

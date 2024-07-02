@@ -13,36 +13,40 @@ namespace PopsBubble
 {
     public class HexGrid : MonoBehaviour
     {
+        #region REFERENCES
+        
         private BubblePool _pool;
         private GameFlow _flow;
+        
+        #endregion
+        
+        #region VARIABLES
         
         [SerializeField] private Vector2Int _gridSize;
         private float _cellWidth;
         private float _cellHalfWidth;
         private float _rowHeight;
 
+        private int _maxNewCellValue;
+        private int _minNewCellValue;
+        
+        [SerializeField] private GameObject _hexCellPrefab;
         [SerializeField] private GameObject _bubblePrefab;
         
         private Dictionary<Vector2Int, HexCell> _cellMap;
 
         private bool _firstRowOdd;
         
+        #endregion
+        
         #region METHODS
 
-        private void Start()
-        {
-
-        }
-
+        #region Grid Generation
+        
         public void GenerateGrid()
         {
-            _pool = DependencyContainer.BubblePool;
-            _flow = DependencyContainer.GameFlow;
-            
-            _cellWidth = GameVar.CellWidth;
-            _rowHeight = GameVar.RowHeight();
-            
-            _cellHalfWidth = _cellWidth * 0.5f;
+            SetReferencesAndVariables();
+
             _cellMap = new Dictionary<Vector2Int, HexCell>();
             
             for (int i = 0; i < _gridSize.x; i++)
@@ -50,7 +54,10 @@ namespace PopsBubble
                 for (int j = 0; j < _gridSize.y; j++)
                 {
                     Vector2Int coords = new Vector2Int(i, j);
-                    HexCell nextCell = new HexCell(coords);
+                    Vector2 position = CellPosition(coords);
+
+                    HexCell nextCell = GenerateHexCell(coords, position);
+                    
                     _cellMap.Add(coords, nextCell);
                 }
             }
@@ -69,58 +76,40 @@ namespace PopsBubble
                 if (pair.Key.y >= minimumYRow)
                 {
                     int value = Random.Range(minimumPower, maximumPower);
-                    pair.Value.Value = value;
-                    bubbleTasks.Add(_pool.Dispense(pair.Value));
-                    //SpawnBubble(pair.Value);
+                    pair.Value.SetData(value);
                 }
             }
 
             await UniTask.WhenAll(bubbleTasks);
         }
 
-        public async UniTask MoveGridDown()
+        private void SetReferencesAndVariables()
         {
-            for (int i = 0; i < _gridSize.x; i++)
-            {
-                Vector2Int checkCoordinates = new Vector2Int(i, 0);
-                if (_cellMap[checkCoordinates].Value != 0) return;
-            }
-
-            List<UniTask> dropTasks = new List<UniTask>();
+            _pool = DependencyContainer.BubblePool;
+            _flow = DependencyContainer.GameFlow;
             
-            _firstRowOdd = !_firstRowOdd;
-            for (int i = 1; i < _gridSize.y; i++)
-            {
-                for (int j = 0; j < _gridSize.x; j++)
-                {
-                    Vector2Int oldCellCoords = new Vector2Int(j, i);
-                    Vector2Int newCellCoords = new Vector2Int(j, i - 1);
+            _cellWidth = GameVar.CellWidth;
+            _rowHeight = GameVar.RowHeight();
+            _cellHalfWidth = _cellWidth * 0.5f;
 
-                    if (_cellMap[oldCellCoords].Value == 0) continue;
+            _minNewCellValue = _flow.LevelProfile.MinimumStartingValue;
+            _maxNewCellValue = _flow.LevelProfile.MaximumStartingValue;
+        }
+
+        private HexCell GenerateHexCell(Vector2Int coords, Vector2 pos)
+        {
+            GameObject hexCell = Instantiate(_hexCellPrefab, transform);
+            hexCell.transform.position = CellPosition(coords);
                     
-                    _cellMap[newCellCoords].Value = _cellMap[oldCellCoords].Value;
-                    dropTasks.Add(_cellMap[oldCellCoords].Bubble.DropDown(_cellMap[newCellCoords]));
-                }
-            }
+            HexCell cellScript = hexCell.GetComponent<HexCell>();
+            cellScript.Initialize(this, coords, CellPosition(coords));
 
-            
-            for (int i = 0; i < _gridSize.x; i++)
-            {
-                Vector2Int newCoords = new Vector2Int(i, _gridSize.y - 1);
-                _cellMap[newCoords].Value = 0;
-                //dropTasks.Add(_pool.Dispense(_cellMap[newCoords]));
-            }
-            
-            
-            await UniTask.WhenAll(dropTasks);
+            return cellScript;
         }
         
-        public void SpawnBubble(HexCell targetHex)
-        {
-            GameObject bubble = Instantiate(_bubblePrefab, transform);
-            bubble.transform.position = CellPosition(targetHex.Coordinates);
-            bubble.GetComponent<Bubble>().Initialize(targetHex);
-        }
+        #endregion
+        
+        #region Neighbour Detection
         
         public HexCell[] NeighbourCells(HexCell cell)
         {
@@ -141,20 +130,7 @@ namespace PopsBubble
 
             return neighbours;
         }
-
-        public Vector2 CellPosition(HexCell cell)
-        {
-            return CellPosition(cell.Coordinates);
-        }
         
-        public Vector2 CellPosition(Vector2Int coords)
-        {
-            float positionX = transform.position.x + (coords.x * _cellWidth) + (OddRow(coords) ? _cellHalfWidth : 0f);
-            float positionY = transform.position.y + coords.y * (_rowHeight);
-
-            return new Vector2(positionX, positionY);
-        }
-
         public CellSearchResult IterateForValue(HexCell startingCell)
         {
             int value = startingCell.Value;
@@ -193,9 +169,97 @@ namespace PopsBubble
             result.ValueCells = valueCells;
             result.NeighbourCells = neighbourCells;
 
-            
             return result;
         }
+        
+        #endregion
+        
+        #region Cell Positioning
+        
+        public Vector2 CellPosition(HexCell cell)
+        {
+            return CellPosition(cell.Coordinates);
+        }
+        
+        public Vector2 CellPosition(Vector2Int coords)
+        {
+            float positionX = transform.position.x + (coords.x * _cellWidth) + (OddRow(coords) ? _cellHalfWidth : 0f);
+            float positionY = transform.position.y + coords.y * (_rowHeight);
+
+            return new Vector2(positionX, positionY);
+        }
+        
+        // This is a hack. I have to rewrite this later
+        public Vector2Int HexCoordinate(Vector2 worldPos)
+        {
+            Vector2Int finalCoordinates = Vector2Int.zero;
+            
+            float epsilon = 0.2f;
+            for (int i = 0; i < _gridSize.x; i++)
+            {
+                for (int j = 0; j < _gridSize.y; j++)
+                {
+                    Vector2Int coordinateVector = new Vector2Int(i, j);
+                    Vector2 preciseVector = CellPosition(coordinateVector);
+
+                    if ((preciseVector - worldPos).magnitude <= epsilon)
+                    {
+                        finalCoordinates = coordinateVector;
+                    }
+                }
+            }
+
+            return finalCoordinates;
+        }
+
+        public HexCell CellFromCoordinates(Vector2Int coordinates)
+        {
+            return _cellMap[coordinates];
+        }
+        
+        #endregion
+        
+        #region CellMovement
+        public async UniTask MoveGridDown()
+        {
+            if (!FirstRowEmpty()) return;
+
+            _firstRowOdd = !_firstRowOdd;
+            
+            // Transfer all cells down
+            for (int i = 1; i < _gridSize.y; i++)
+            {
+                for (int j = 0; j < _gridSize.x; j++)
+                {
+                    Vector2Int topCoords = new Vector2Int(j, i);
+                    Vector2Int bottomCoords = new Vector2Int(j, i - 1);
+
+                    HexCell targetCell = _cellMap[bottomCoords];
+                    HexCell sourceCell = _cellMap[topCoords];
+                    
+                    targetCell.TransferData(sourceCell);
+                    sourceCell.Clear();
+                }
+            }
+
+            List<UniTask> dropTasks = new List<UniTask>();
+            
+            // Spawn new bubbles for the top row
+            for (int i = 0; i < _gridSize.x; i++)
+            {
+                Vector2Int coords = new Vector2Int(i, _gridSize.y - 1);
+                dropTasks.Add(_cellMap[coords].SetData(RandomStartingValue()));
+            }
+            
+            // Move the bubbles to new locations
+            foreach (KeyValuePair<Vector2Int, HexCell> pair in _cellMap)
+            {
+                dropTasks.Add(pair.Value.UpdateForDropDown());
+            }
+            await UniTask.WhenAll(dropTasks);
+        }
+        
+        #endregion
         
         #region Utility Methods
         private bool OddRow(Vector2Int coords)
@@ -220,7 +284,22 @@ namespace PopsBubble
                     return coords;
             }
         }
-        
+
+        private bool FirstRowEmpty()
+        {
+            for (int i = 0; i < _gridSize.x; i++)
+            {
+                Vector2Int coords = new Vector2Int(i, 0);
+                if (_cellMap[coords].Value != 0) return false;
+            }
+
+            return true;
+        }
+
+        private int RandomStartingValue()
+        {
+            return Random.Range(_minNewCellValue, _maxNewCellValue + 1);
+        }
         
         #endregion
 
@@ -235,7 +314,6 @@ namespace PopsBubble
 
                 foreach (KeyValuePair<Vector2Int, HexCell> pair in _cellMap)
                 {
-                    //Gizmos.DrawSphere(CellPosition(pair.Key), 0.5f);
                     WriteDebugTextTest.DrawString(pair.Value.Value.ToString(), CellPosition(pair.Key), Color.green);
                 }
             }

@@ -19,9 +19,6 @@ namespace PopsBubble
         
         [SerializeField] private TextMeshPro valueText;
         
-        public HexCell Cell { get; private set; }
-        public int Value { get; private set; }
-
         public void SetReferences(BubblePool pool, HexGrid grid)
         {
             _pool = pool;
@@ -30,32 +27,13 @@ namespace PopsBubble
         }
         
         
-        public void Initialize(HexCell cell)
+        public void Initialize(Color color, int value)
         {
-            Cell = cell;
-            Cell.Bubble = this;
-            Value = cell.Value;
-            valueText.text = GameVar.DisplayValue(Value).ToString("F00");
+            valueText.text = GameVar.DisplayValue(value).ToString("F00");
         }
 
-        public void Blank()
-        {
-            Cell = null;
-        }
-
-        public async UniTask DropDown(HexCell newCell)
-        {
-            Cell = newCell;
-            Value = newCell.Value;
-            newCell.Bubble = this;
-
-            await transform.DOMove(_grid.CellPosition(Cell), _dropDuration);
-        }
-        
         public void Pop()
         {
-            Cell.Bubble = null;
-            Cell.Value = 0;
             _pool.Recall(this);
         }
 

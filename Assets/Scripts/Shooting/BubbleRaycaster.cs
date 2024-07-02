@@ -97,7 +97,8 @@ namespace PopsBubble
 
             _drawer.DrawPath(hitPoints);
 
-            _hitCell = previousHitInfo.transform.GetComponent<Bubble>().Cell;
+            _hitCell = _grid.CellFromCoordinates(_grid.HexCoordinate(previousHitInfo.transform.position));
+            //_hitCell = previousHitInfo.transform.GetComponent<Bubble>().Cell;
             ShowTargetCell(_hitCell, previousHitInfo.point);
         }
 
@@ -147,17 +148,7 @@ namespace PopsBubble
                 Debug.Log("target cell is null");
                 return;
             }
-            _targetCell.Value = _shootCalculator.GetValue();
-
-            await _pool.Dispense(_targetCell);
-            
-            //await _grid.BringBubble(_targetCell);
-            //
-            // GameObject newBubble = Instantiate(_bubblePrefab, _grid.CellPosition(_targetCell.Coordinates),
-            //     Quaternion.identity, _grid.transform);
-            // newBubble.GetComponent<Bubble>().Initialize(_targetCell);
-            //
-
+            await _targetCell.SetData(_shootCalculator.GetValue());
         }
 
         public async UniTask CalculatePop()
@@ -173,9 +164,7 @@ namespace PopsBubble
                 
                 for (int i = 0; i < initialSearchResult.ValueCells.Count; i++)
                 {
-                    Debug.Log($"bubble pop iteration is {i}");
-                    Debug.Log($"Coordinates are {initialSearchResult.ValueCells[i].Coordinates}");
-                    initialSearchResult.ValueCells[i].Bubble.Pop();
+                    initialSearchResult.ValueCells[i].PopBubble();
                 }
                 
                 HexCell nextChainHead = initialSearchResult.NeighbourCells[0];
@@ -200,36 +189,12 @@ namespace PopsBubble
                     if (reverseNeighbours[i] != null && initialSearchResult.ValueCells.Contains(reverseNeighbours[i]))
                     {
                         _targetCell = reverseNeighbours[i];
-                        _targetCell.Value = nextValue;
-                        await _pool.Dispense(_targetCell);
-                        //_grid.BringBubble(_targetCell);
-                        //_grid.SpawnBubble(_targetCell);
+                        await _targetCell.SetData(nextValue);
                         break;
                     }
                 }
 
-                await UniTask.Delay(1000);
             }
-            
-            /*
-            // Scan from the first cell
-            CellSearchResult cellSearchResult = _grid.IterateForValue(_targetCell);
-
-            // Pop the cells that match the value
-            for (int i = 0; i < cellSearchResult.ValueCells.Count; i++)
-            {
-                cellSearchResult.ValueCells[i].Bubble.Pop();
-            }
-
-            // Calculate the new value
-            int newValue = _targetCell.Value * cellSearchResult.ValueCells.Count;
-
-            // Search all the neighbours. Pass the ones that don't match the new value
-            */
-            
-            
-            
-            
             
             ResetTargetCell();
         }

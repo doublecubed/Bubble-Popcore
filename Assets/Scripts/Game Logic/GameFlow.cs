@@ -17,8 +17,6 @@ namespace PopsBubble
 
         private GameStateMachine _stateMachine;
         
-        
-        
         #endregion
         
         #region VARIABLES
