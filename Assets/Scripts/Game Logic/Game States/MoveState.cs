@@ -7,15 +7,19 @@ namespace PopsBubble
 {
     public class MoveState : GameState
     {
+        private IPathMover _mover;
         private BubbleRaycaster _raycaster;
 
         public MoveState()
         {
+            _mover = DependencyContainer.PathMover;
             _raycaster = DependencyContainer.BubbleRaycaster;
         }
         
-        public override void OnEnter()
+        public override async void OnEnter()
         {
+            
+            
             _raycaster.MakeNewBubble();
 
             OnStateComplete?.Invoke();

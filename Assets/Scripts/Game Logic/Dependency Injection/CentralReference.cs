@@ -17,11 +17,11 @@ namespace PopsBubble
         [SerializeField] private BubbleIndicator _bubbleIndicator;
         [SerializeField] private BubbleRaycaster _bubbleRaycaster;
         [SerializeField] private BubblePool _bubblePool;
-        
+        [SerializeField] private BubbleMover _bubbleMover;
         
         private void Awake()
         {
-            DependencyContainer.Initialize(_grid, _gameFlow, _playerInput, _bubbleIndicator, _bubbleRaycaster, _bubblePool);
+            DependencyContainer.Initialize(_grid, _gameFlow, _playerInput, _bubbleIndicator, _bubbleRaycaster, _bubblePool, _bubbleMover);
         }
     }
 

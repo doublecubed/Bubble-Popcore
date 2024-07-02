@@ -8,12 +8,16 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using UnityEngine.Serialization;
 
 namespace PopsBubble
 {
     public class HexGrid : MonoBehaviour
     {
         #region REFERENCES
+
+        [SerializeField] private Transform _cellParent;
+        [field: SerializeField] public Transform BubbleParent { get; private set; }
         
         private BubblePool _pool;
         private GameFlow _flow;
@@ -94,7 +98,7 @@ namespace PopsBubble
         
         private HexCell GenerateHexCell(Vector2Int coords, Vector2 pos)
         {
-            GameObject hexCell = Instantiate(_hexCellPrefab, transform);
+            GameObject hexCell = Instantiate(_hexCellPrefab, _cellParent);
             hexCell.transform.position = CellPosition(coords);
                     
             HexCell cellScript = hexCell.GetComponent<HexCell>();

@@ -49,7 +49,7 @@ namespace PopsBubble
             cell.Bubble = nextBubble;
             
             Transform bubbleTransform = nextBubble.transform;
-            bubbleTransform.parent = _grid.transform;
+            bubbleTransform.parent = _grid.BubbleParent;
             bubbleTransform.position = _grid.CellPosition(cell);
             
             nextBubble.Initialize(new Color(Random.Range(0f,1f), Random.Range(0f,1f), Random.Range(0f,1f), 1f), cell.Value);

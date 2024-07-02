@@ -25,8 +25,10 @@ namespace PopsBubble
         
         public static BubblePool BubblePool { get; private set; }
         
+        public static IPathMover PathMover { get; private set; }
+        
         public static void Initialize(HexGrid grid, GameFlow flow, PlayerInput input, 
-            IShootIndicator shootIndicator, BubbleRaycaster raycaster, BubblePool pool)
+            IShootIndicator shootIndicator, BubbleRaycaster raycaster, BubblePool pool, IPathMover mover)
         {
             Grid = grid;
             GameFlow = flow;
@@ -34,6 +36,7 @@ namespace PopsBubble
             ShootIndicator = shootIndicator;
             BubbleRaycaster = raycaster;
             BubblePool = pool;
+            PathMover = mover;
             
             ShootCalculator = new ShootCalculator(1, flow.LevelProfile.MaximumShootValue);
         }
