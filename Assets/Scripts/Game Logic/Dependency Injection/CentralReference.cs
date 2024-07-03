@@ -11,6 +11,10 @@ namespace PopsBubble
 {
     public class CentralReference : MonoBehaviour
     {
+        [Header("GameObject References")] 
+        [SerializeField] private Transform _shootingPoint;
+        
+        [Header("Script References")]
         [SerializeField] private GameFlow _gameFlow;
         [SerializeField] private HexGrid _grid;
         [SerializeField] private PlayerInput _playerInput;
@@ -18,10 +22,13 @@ namespace PopsBubble
         [SerializeField] private BubbleRaycaster _bubbleRaycaster;
         [SerializeField] private BubblePool _bubblePool;
         [SerializeField] private BubbleMover _bubbleMover;
+        [SerializeField] private LinePathDrawer _pathDrawer;
         
         private void Awake()
         {
-            DependencyContainer.Initialize(_grid, _gameFlow, _playerInput, _bubbleIndicator, _bubbleRaycaster, _bubblePool, _bubbleMover);
+            DependencyContainer.Initialize(_shootingPoint,
+                _grid, _gameFlow, _playerInput, _bubbleIndicator,
+                _bubbleRaycaster, _bubblePool, _bubbleMover, _pathDrawer);
         }
     }
 

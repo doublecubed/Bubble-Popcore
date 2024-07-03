@@ -686,13 +686,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f88a13a0a8dddee4f918699e41536581, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shootingPoint: {fileID: 35203891}
   _gameFlow: {fileID: 1276903251}
   _grid: {fileID: 1482849797}
   _playerInput: {fileID: 918506360}
   _bubbleIndicator: {fileID: 35203892}
   _bubbleRaycaster: {fileID: 918506361}
   _bubblePool: {fileID: 360193448}
-  _bubbleMover: {fileID: 0}
+  _bubbleMover: {fileID: 35203893}
+  _pathDrawer: {fileID: 918506362}
 --- !u!1 &918506358
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,6 +12,8 @@ namespace PopsBubble
 {
     public static class DependencyContainer
     {
+        public static Transform ShootingPoint { get; private set; }
+        
         public static HexGrid Grid { get; private set; }
         public static GameFlow GameFlow { get; private set; }
         
@@ -20,16 +22,21 @@ namespace PopsBubble
         public static IShootIndicator ShootIndicator { get; private set; }
         
         public static BubbleRaycaster BubbleRaycaster { get; private set; }
-        
+        public static IRaycaster ShootRaycaster { get; private set; }
         public static IShootValueCalculator ShootCalculator { get; private set; }
         
         public static BubblePool BubblePool { get; private set; }
         
         public static IPathMover PathMover { get; private set; }
         
-        public static void Initialize(HexGrid grid, GameFlow flow, PlayerInput input, 
-            IShootIndicator shootIndicator, BubbleRaycaster raycaster, BubblePool pool, IPathMover mover)
+        public static IPathDrawer PathDrawer { get; private set; }
+        
+        public static void Initialize(Transform shootingPoint, HexGrid grid, GameFlow flow, PlayerInput input, 
+            IShootIndicator shootIndicator, BubbleRaycaster raycaster,
+            BubblePool pool, IPathMover mover, IPathDrawer drawer)
         {
+            ShootingPoint = shootingPoint;
+            
             Grid = grid;
             GameFlow = flow;
             PlayerInput = input;
@@ -37,8 +44,10 @@ namespace PopsBubble
             BubbleRaycaster = raycaster;
             BubblePool = pool;
             PathMover = mover;
+            PathDrawer = drawer;
             
             ShootCalculator = new ShootCalculator(1, flow.LevelProfile.MaximumShootValue);
+            ShootRaycaster = new ShootRaycaster();
         }
     }
 

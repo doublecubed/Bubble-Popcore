@@ -8,7 +8,7 @@ using UnityEngine;
 namespace PopsBubble
 {
 
-    public class LinePathDrawer : MonoBehaviour, IPathDrawing
+    public class LinePathDrawer : MonoBehaviour, IPathDrawer
     {
         [SerializeField] private Transform _shootingPoint;
         private Vector2 _shootPosition;

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace PopsBubble
 {
-    public interface IPathDrawing
+    public interface IPathDrawer
     {
         public void DrawPath(List<Vector2> points);
 

@@ -18,7 +18,7 @@ namespace PopsBubble
         private PlayerInput _input;
         [SerializeField] private HexGrid _grid;
         
-        private IPathDrawing _drawer;
+        private IPathDrawer _drawer;
 
         [SerializeField] private GameObject _bubbleGhostPrefab;
         [SerializeField] private GameObject _bubblePrefab;
@@ -45,7 +45,7 @@ namespace PopsBubble
         {
             _gameFlow = DependencyContainer.GameFlow;
             _input = GetComponent<PlayerInput>();
-            _drawer = GetComponent<IPathDrawing>();
+            _drawer = GetComponent<IPathDrawer>();
             _shootCalculator = DependencyContainer.ShootCalculator;
             _pool = DependencyContainer.BubblePool;
             
