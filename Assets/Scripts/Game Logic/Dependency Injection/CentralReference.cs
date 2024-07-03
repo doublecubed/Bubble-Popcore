@@ -6,14 +6,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace PopsBubble
 {
     public class CentralReference : MonoBehaviour
     {
+        [Header("Prefab References")] 
+        [SerializeField] private GameObject _bubblePrefab;
+        [SerializeField] private GameObject _hexCellPrefab;
+        
         [Header("GameObject References")] 
         [SerializeField] private Transform _shootingPoint;
         [SerializeField] private Transform _ghostBubble;
+        [SerializeField] private Transform _moverTrail;
         
         [Header("Script References")]
         [SerializeField] private GameFlow _gameFlow;
@@ -22,14 +28,14 @@ namespace PopsBubble
         [SerializeField] private BubbleIndicator _bubbleIndicator;
         [SerializeField] private BubbleRaycaster _bubbleRaycaster;
         [SerializeField] private BubblePool _bubblePool;
-        [SerializeField] private BubbleMover _bubbleMover;
         [SerializeField] private LinePathDrawer _pathDrawer;
         
         private void Awake()
         {
-            DependencyContainer.Initialize(_shootingPoint, _ghostBubble,
+            DependencyContainer.Initialize(_bubblePrefab, _hexCellPrefab,
+                _shootingPoint, _ghostBubble, _moverTrail,
                 _grid, _gameFlow, _playerInput, _bubbleIndicator,
-                _bubbleRaycaster, _bubblePool, _bubbleMover, _pathDrawer);
+                _bubbleRaycaster, _bubblePool, _pathDrawer);
         }
     }
 

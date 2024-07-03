@@ -133,7 +133,6 @@ GameObject:
   m_Component:
   - component: {fileID: 35203891}
   - component: {fileID: 35203892}
-  - component: {fileID: 35203893}
   m_Layer: 0
   m_Name: BubbleShootPoint
   m_TagString: Untagged
@@ -172,20 +171,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _shootIndicator: {fileID: 66436366720623982}
   _nextIndicator: {fileID: 1127266512}
---- !u!114 &35203893
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 35203890}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b6d16c705811a24ca28019b94dc4a3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _movingItem: {fileID: 1781310631}
-  _startingPoint: {fileID: 35203891}
 --- !u!1 &57899110
 GameObject:
   m_ObjectHideFlags: 0
@@ -350,7 +335,7 @@ GameObject:
   - component: {fileID: 360193449}
   - component: {fileID: 360193448}
   m_Layer: 0
-  m_Name: BubblePool
+  m_Name: BubblePoolParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -681,15 +666,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f88a13a0a8dddee4f918699e41536581, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bubblePrefab: {fileID: 7615426999544883533, guid: 4117eb8938344574686ff0d3c013b3eb, type: 3}
+  _hexCellPrefab: {fileID: 6447535554052761815, guid: 4e8015f02a74368439beb5c1af5206fc, type: 3}
   _shootingPoint: {fileID: 35203891}
   _ghostBubble: {fileID: 7996868247072820000}
+  _moverTrail: {fileID: 1781310631}
   _gameFlow: {fileID: 1276903251}
   _grid: {fileID: 1482849797}
   _playerInput: {fileID: 918506360}
   _bubbleIndicator: {fileID: 35203892}
   _bubbleRaycaster: {fileID: 918506361}
   _bubblePool: {fileID: 360193448}
-  _bubbleMover: {fileID: 35203893}
   _pathDrawer: {fileID: 918506362}
 --- !u!1 &918506358
 GameObject:
@@ -758,7 +745,7 @@ MonoBehaviour:
   _currentGhost: {fileID: 8395461483427934499}
   _hitAngle: 0
   _hitSegment: 0
-  _ghostRestingPoint: {fileID: 1950835328}
+  _ghostRestingPoint: {fileID: 0}
   _targetCell: {fileID: 0}
 --- !u!114 &918506362
 MonoBehaviour:
@@ -1452,7 +1439,6 @@ Transform:
   - {fileID: 1482849798}
   - {fileID: 707567838}
   - {fileID: 35203891}
-  - {fileID: 1950835328}
   - {fileID: 360193449}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1594,10 +1580,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 724248164}
   - {fileID: 1276903250}
   - {fileID: 918506359}
   - {fileID: 1581692992}
-  - {fileID: 724248164}
   - {fileID: 57899111}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1678,37 +1664,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 6, y: 1}
   m_EdgeRadius: 0
---- !u!1 &1950835327
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1950835328}
-  m_Layer: 0
-  m_Name: GhostRestPosition
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1950835328
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1950835327}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.28, y: 4.77, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1612576524}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &66436366720623982
 MonoBehaviour:
   m_ObjectHideFlags: 0

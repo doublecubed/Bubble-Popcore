@@ -18,21 +18,14 @@ namespace PopsBubble
         private PlayerInput _input;
         [SerializeField] private HexGrid _grid;
         
-        private IPathDrawer _drawer;
-
         [SerializeField] private GameObject _bubbleGhostPrefab;
         [SerializeField] private GameObject _bubblePrefab;
-        
-        public GameObject _currentGhost;
-        public float _hitAngle;
-        public int _hitSegment;
         
         private HexCell _hitCell;
         private HexCell _fromCell;
 
         private bool _isShooting;
 
-        public Transform _ghostRestingPoint;
         public HexCell _targetCell;
 
         public IShootValueCalculator _shootCalculator;
@@ -45,16 +38,10 @@ namespace PopsBubble
         {
             _gameFlow = DependencyContainer.GameFlow;
             _input = GetComponent<PlayerInput>();
-            _drawer = GetComponent<IPathDrawer>();
             _shootCalculator = DependencyContainer.ShootCalculator;
             _pool = DependencyContainer.BubblePool;
             
             _input.OnMouseButtonUp += ShootSignal;
-        }
-
-        public void ResetGhost()
-        {
-            _currentGhost.transform.position = _ghostRestingPoint.position;
         }
 
         public void ResetTargetCell()
@@ -66,9 +53,6 @@ namespace PopsBubble
         {
             if (!(_gameFlow.CurrentGameState() is ShootState)) return; 
             
-            ResetGhost();
-            
-            _drawer.ClearPath();
             OnBubbleShot?.Invoke();
         }
 

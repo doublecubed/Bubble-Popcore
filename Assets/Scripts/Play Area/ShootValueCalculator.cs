@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace PopsBubble
 {
-    public class ShootCalculator : IShootValueCalculator
+    public class ShootValueCalculator : IShootValueCalculator
     {
         private int _minValue;
         private int _maxValue;
@@ -15,7 +15,7 @@ namespace PopsBubble
         private int _currentValue;
         private int _nextValue;
 
-        public ShootCalculator(int minValue, int maxValue)
+        public ShootValueCalculator(int minValue, int maxValue)
         {
             _minValue = minValue;
             _maxValue = maxValue;

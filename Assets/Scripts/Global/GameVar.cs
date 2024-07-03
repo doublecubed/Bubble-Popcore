@@ -26,10 +26,10 @@ namespace PopsBubble
         
         // Animation and Tweening variables
 
-        public const float BubbleAppearDuration = 0.5f;
+        public const float BubbleAppearDuration = 0.2f;
 
-        public const float GridDropDuration = 0.5f;
+        public const float GridDropDuration = 0.2f;
 
-        public const float BubbleMoveDuration = 0.5f;
+        public const float BubbleTrailMoveSpeed = 30f;
     }
 }

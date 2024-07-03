@@ -12,9 +12,19 @@ namespace PopsBubble
 {
     public static class DependencyContainer
     {
+        #region PREFAB REFERENCES
+        
+        public static GameObject BubblePrefab { get; private set; }
+        public static GameObject HexCellPrefab { get; private set; }
+        
+        #endregion
+        
         #region TRANSFORM REFERENCES
+        
         public static Transform ShootingPoint { get; private set; }
         public static Transform GhostBubble { get; private set; }
+        public static Transform MoverTrail { get; private set; }
+        
         #endregion
         
         #region SCRIPT REFERENCES
@@ -31,12 +41,18 @@ namespace PopsBubble
         
         #endregion
         
-        public static void Initialize(Transform shootingPoint, Transform ghostBubble, HexGrid grid, GameFlow flow, PlayerInput input, 
+        public static void Initialize(GameObject bubblePrefab, GameObject hexCellPrefab,
+            Transform shootingPoint, Transform ghostBubble, Transform moverTrail,
+            HexGrid grid, GameFlow flow, PlayerInput input, 
             IShootIndicator shootIndicator, BubbleRaycaster raycaster,
-            BubblePool pool, IPathMover mover, IPathDrawer drawer)
+            BubblePool pool, IPathDrawer drawer)
         {
+            BubblePrefab = bubblePrefab;
+            HexCellPrefab = hexCellPrefab;
+            
             ShootingPoint = shootingPoint;
             GhostBubble = ghostBubble;
+            MoverTrail = moverTrail;
             
             Grid = grid;
             GameFlow = flow;
@@ -44,10 +60,10 @@ namespace PopsBubble
             ShootIndicator = shootIndicator;
             BubbleRaycaster = raycaster;
             BubblePool = pool;
-            PathMover = mover;
             PathDrawer = drawer;
-            
-            ShootCalculator = new ShootCalculator(1, flow.LevelProfile.MaximumShootValue);
+
+            PathMover = new BubbleTrailMover();
+            ShootCalculator = new ShootValueCalculator(1, flow.LevelProfile.MaximumShootValue);
             ShootRaycaster = new ShootRaycaster();
         }
     }

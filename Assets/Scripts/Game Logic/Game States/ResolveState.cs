@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace PopsBubble
 {
-    public class PopState : GameState
+    public class ResolveState : GameState
     {
         private BubbleRaycaster _raycaster;
 
-        public PopState()
+        public ResolveState()
         {
             _raycaster = DependencyContainer.BubbleRaycaster;
         }

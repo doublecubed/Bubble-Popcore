@@ -44,7 +44,7 @@ namespace PopsBubble
             _prepareState = new PrepareState();
             _shootState = new ShootState();
             _moveState = new MoveState();
-            _popState = new PopState();
+            _popState = new ResolveState();
             _tidyState = new TidyState();
             _endState = new EndState();
         }

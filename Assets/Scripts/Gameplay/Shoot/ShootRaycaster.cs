@@ -30,6 +30,8 @@ namespace PopsBubble
         private const int _cellLayer = 9;
         
         #endregion
+
+        private ShootRaycastResult _shootResult;
         
         #endregion
 
@@ -80,7 +82,13 @@ namespace PopsBubble
             HexCell hitCell = _grid.CellFromCoordinates(_grid.HexCoordinate(firstHitInfo.transform.position));
             result.LandingCell = LandingCell(hitCell, firstHitInfo.point);
 
+            _shootResult = result;
             return result;
+        }
+
+        public ShootRaycastResult ShootResult()
+        {
+            return _shootResult;
         }
         
         private HexCell LandingCell(HexCell fromCell, Vector2 hitPoint)

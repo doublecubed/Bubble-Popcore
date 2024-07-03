@@ -58,7 +58,8 @@ namespace PopsBubble
 
         public override void OnExit()
         {
-            
+            _pathDrawer.ClearPath();
+            ClearGhostBubble();
         }
 
         #endregion
@@ -82,7 +83,11 @@ namespace PopsBubble
 
         private void HandleGhostBubble(ShootRaycastResult raycastResult)
         {
-            if (raycastResult.HitPoints.Count == 0) ClearGhostBubble();
+            if (raycastResult.HitPoints.Count == 0)
+            {
+                ClearGhostBubble();
+                return;
+            }
             
             if (_previousFrameTarget != raycastResult.LandingCell) 
                 PositionGhostBubble(raycastResult.LandingCell.Position);

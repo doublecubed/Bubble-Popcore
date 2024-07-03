@@ -10,5 +10,7 @@ namespace PopsBubble
     public interface IRaycaster
     {
         public ShootRaycastResult ShootRaycast(Vector2 direction);
+
+        public ShootRaycastResult ShootResult();
     }
 }
