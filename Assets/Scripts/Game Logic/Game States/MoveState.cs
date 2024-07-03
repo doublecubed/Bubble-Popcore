@@ -38,8 +38,6 @@ namespace PopsBubble
             
             await GenerateBubble(_targetHexCell);
             
-            _raycaster.MakeNewBubble();
-
             OnStateComplete?.Invoke();
         }
 

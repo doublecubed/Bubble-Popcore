@@ -382,9 +382,6 @@ namespace PopsBubble
         {
             if (Application.isPlaying)
             {
-
-                Gizmos.color = Color.red;
-
                 foreach (KeyValuePair<Vector2Int, HexCell> pair in _cellMap)
                 {
                     DrawString(pair.Value.Value.ToString(), CellPosition(pair.Key), Color.green);
@@ -400,18 +397,12 @@ namespace PopsBubble
             var view = UnityEditor.SceneView.currentDrawingSceneView;
             Vector3 screenPos = view.camera.WorldToScreenPoint(worldPos);
             Vector2 size = GUI.skin.label.CalcSize(new GUIContent(text));
-            GUI.Label(new Rect(screenPos.x - (size.x / 2), -screenPos.y + view.position.height + 4, size.x, size.y), text);
+            GUI.Label(new Rect(screenPos.x - (size.x / 2), -screenPos.y + view.position.height - 20, size.x, size.y), text);
             UnityEditor.Handles.EndGUI();
         }
         
         #endregion
     }
 
-    public struct ChainSearchResult
-    {
-        public List<HexCell> ValueCells;
-        public List<HexCell> NeighbourCells;
-    }
-    
 
 }

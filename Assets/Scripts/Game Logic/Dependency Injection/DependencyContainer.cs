@@ -38,6 +38,8 @@ namespace PopsBubble
         public static BubblePool BubblePool { get; private set; }
         public static IPathMover PathMover { get; private set; }
         public static IPathDrawer PathDrawer { get; private set; }
+        public static IChainCalculator ChainCalculator { get; private set; }
+        public static IIslandCalculator IslandCalculator { get; private set; }
         
         #endregion
         
@@ -65,6 +67,8 @@ namespace PopsBubble
             PathMover = new BubbleTrailMover();
             ShootCalculator = new ShootValueCalculator(1, flow.LevelProfile.MaximumShootValue);
             ShootRaycaster = new ShootRaycaster();
+            ChainCalculator = new ChainCalculator();
+            IslandCalculator = new IslandCalculator();
         }
     }
 

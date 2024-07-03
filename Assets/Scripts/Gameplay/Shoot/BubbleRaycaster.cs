@@ -119,9 +119,5 @@ namespace PopsBubble
             
         }
         
-        private bool HitsTopBoundary(RaycastHit2D hitInfo)
-        {
-            return hitInfo.transform.gameObject.layer == 8;
-        }
     }
 }

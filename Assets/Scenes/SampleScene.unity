@@ -506,6 +506,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1264747622}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &596148339
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 596148341}
+  m_Layer: 0
+  m_Name: TestObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &596148341
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 596148339}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.0886204, y: 4.593309, z: 0.05241175}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -742,10 +773,6 @@ MonoBehaviour:
   _grid: {fileID: 1482849797}
   _bubbleGhostPrefab: {fileID: 8395461481751222764, guid: 302fc856279ea834fa4af4f883033006, type: 3}
   _bubblePrefab: {fileID: 1255985384353216455, guid: b3b10796d86f6764ea5d695e1adb3009, type: 3}
-  _currentGhost: {fileID: 8395461483427934499}
-  _hitAngle: 0
-  _hitSegment: 0
-  _ghostRestingPoint: {fileID: 0}
   _targetCell: {fileID: 0}
 --- !u!114 &918506362
 MonoBehaviour:
@@ -2071,3 +2098,4 @@ SceneRoots:
   - {fileID: 7996868247072820000}
   - {fileID: 3826215959891564721}
   - {fileID: 1781310631}
+  - {fileID: 596148341}
