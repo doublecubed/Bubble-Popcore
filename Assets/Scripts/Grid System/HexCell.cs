@@ -89,7 +89,7 @@ namespace PopsBubble
             Bubble = scrambleData.Bubble;
         }
         
-        public async UniTask UpdateForRowMovement()
+        public async UniTask UpdateAndMove()
         {
             Position = _grid.CellPosition(Coordinates);
             transform.position = Position;

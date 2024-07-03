@@ -45,16 +45,13 @@ namespace PopsBubble
             float directionAngle = Vector2.Angle(direction, Vector2.right);
             if (directionAngle < 10 || directionAngle > 170) return result; 
             
+            // Dispatch the first ray
             Vector2 firstDirection = direction;
-
             RaycastHit2D firstHitInfo = Physics2D.Raycast(_shootingPoint.position, firstDirection);
-
             result.HitPoints.Add(firstHitInfo.point);
-
             int hitLayer = Layer(firstHitInfo);
-            
-            // Here will be the code of what happens if it hits top boundary directly
 
+            // Bouncing off the side walls
             while (hitLayer == _leftWallLayer || hitLayer == _rightWallLayer)
             {
                 Vector2 bounceDirection = BounceDirection(firstDirection);
@@ -70,6 +67,16 @@ namespace PopsBubble
                 hitLayer = Layer(bounceHitInfo);
             }
             
+            // If it hits the top wall
+            if (hitLayer == _topWallLayer)
+            {
+                Vector2Int topRowCoordinates = _grid.HexCoordinate(firstHitInfo.point);
+                result.LandingCell = _grid.CellFromCoordinates(topRowCoordinates);
+                
+                return result;
+            }
+            
+            // It hits another cell
             HexCell hitCell = _grid.CellFromCoordinates(_grid.HexCoordinate(firstHitInfo.transform.position));
             result.LandingCell = LandingCell(hitCell, firstHitInfo.point);
 

@@ -131,7 +131,7 @@ namespace PopsBubble
             return neighbours;
         }
         
-        public CellSearchResult IterateForValue(HexCell startingCell)
+        public ChainSearchResult IterateForValue(HexCell startingCell)
         {
             int value = startingCell.Value;
             List<HexCell> valueCells = new List<HexCell>();
@@ -165,7 +165,7 @@ namespace PopsBubble
                 }
             }
 
-            CellSearchResult result = new CellSearchResult();
+            ChainSearchResult result = new ChainSearchResult();
             result.ValueCells = valueCells;
             result.NeighbourCells = neighbourCells;
 
@@ -194,7 +194,7 @@ namespace PopsBubble
         {
             Vector2Int finalCoordinates = Vector2Int.zero;
             
-            float epsilon = 0.2f;
+            float epsilon = 0.5f;
             for (int i = 0; i < _gridSize.x; i++)
             {
                 for (int j = 0; j < _gridSize.y; j++)
@@ -250,7 +250,7 @@ namespace PopsBubble
             // Move the bubbles to new locations
             foreach (KeyValuePair<Vector2Int, HexCell> pair in _cellMap)
             {
-                dropTasks.Add(pair.Value.UpdateForRowMovement());
+                dropTasks.Add(pair.Value.UpdateAndMove());
             }
             await UniTask.WhenAll(dropTasks);
         }
@@ -282,7 +282,7 @@ namespace PopsBubble
             List<UniTask> dropTasks = new List<UniTask>();
             foreach (KeyValuePair<Vector2Int, HexCell> pair in _cellMap)
             {
-                dropTasks.Add(pair.Value.UpdateForRowMovement());
+                dropTasks.Add(pair.Value.UpdateAndMove());
             }
             await UniTask.WhenAll(dropTasks);
         }
@@ -306,7 +306,7 @@ namespace PopsBubble
                 int randomIndex = Random.Range(0, scrambleData.Count);
                 cell.AssignData(scrambleData[randomIndex]);
                 scrambleData.RemoveAt(randomIndex);
-                scrambleTasks.Add(cell.UpdateForRowMovement());
+                scrambleTasks.Add(cell.UpdateAndMove());
             }
 
             await UniTask.WhenAll(scrambleTasks);
@@ -407,7 +407,7 @@ namespace PopsBubble
         #endregion
     }
 
-    public struct CellSearchResult
+    public struct ChainSearchResult
     {
         public List<HexCell> ValueCells;
         public List<HexCell> NeighbourCells;

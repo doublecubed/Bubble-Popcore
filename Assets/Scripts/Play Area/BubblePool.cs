@@ -58,13 +58,15 @@ namespace PopsBubble
             await bubbleTransform.DOScale(Vector2.one, _tweenDuration).WithCancellation(_ct);
         }
 
-        public void Recall(Bubble bubble)
+        public async void Recall(Bubble bubble, bool animate = false)
         {
             _bubbleQueue.Enqueue(bubble);
 
             bubble.transform.parent = transform;
             bubble.transform.position = transform.position;
         }
+        
+        
     }
 
 }

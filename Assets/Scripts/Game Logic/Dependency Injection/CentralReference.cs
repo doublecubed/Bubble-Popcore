@@ -13,6 +13,7 @@ namespace PopsBubble
     {
         [Header("GameObject References")] 
         [SerializeField] private Transform _shootingPoint;
+        [SerializeField] private Transform _ghostBubble;
         
         [Header("Script References")]
         [SerializeField] private GameFlow _gameFlow;
@@ -26,7 +27,7 @@ namespace PopsBubble
         
         private void Awake()
         {
-            DependencyContainer.Initialize(_shootingPoint,
+            DependencyContainer.Initialize(_shootingPoint, _ghostBubble,
                 _grid, _gameFlow, _playerInput, _bubbleIndicator,
                 _bubbleRaycaster, _bubblePool, _bubbleMover, _pathDrawer);
         }
