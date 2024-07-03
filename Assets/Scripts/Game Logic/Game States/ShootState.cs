@@ -2,6 +2,7 @@
 // Popcore case
 
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace PopsBubble
 {
@@ -28,8 +29,8 @@ namespace PopsBubble
         public override void OnUpdate()
         {
             ShootRaycastResult raycastResult = _shootRaycaster.ShootRaycast(_input.InputVector);
-            _pathDrawer.DrawPath(raycastResult.HitPoints);
-            //_raycaster.CastTheFirstRay();
+            HandlePathDrawing(raycastResult.HitPoints);
+            _raycaster._targetCell = raycastResult.LandingCell;
         }
 
         public override void OnExit()
@@ -40,6 +41,17 @@ namespace PopsBubble
         private void ShotIsTaken()
         {
             OnStateComplete?.Invoke();
+        }
+
+        private void HandlePathDrawing(List<Vector2> points)
+        {
+            if (points.Count == 0)
+            {
+                _pathDrawer.ClearPath();
+                return;
+            }
+            
+            _pathDrawer.DrawPath(points);
         }
     }
 

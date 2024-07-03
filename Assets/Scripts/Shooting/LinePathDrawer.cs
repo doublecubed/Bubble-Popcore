@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace PopsBubble
@@ -21,6 +22,7 @@ namespace PopsBubble
 
         public void DrawPath(List<Vector2> points)
         {
+            
             _renderer.positionCount = points.Count + 1;
             
             if (points.Count == 0) return;

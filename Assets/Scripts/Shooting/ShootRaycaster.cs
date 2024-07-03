@@ -36,6 +36,7 @@ namespace PopsBubble
         public ShootRaycastResult ShootRaycast(Vector2 direction)
         {
             ShootRaycastResult result = new ShootRaycastResult();
+            result.HitPoints = new List<Vector2>();
             
             // There is no input
             if (direction == Vector2.zero) return result;
@@ -48,7 +49,7 @@ namespace PopsBubble
 
             RaycastHit2D firstHitInfo = Physics2D.Raycast(_shootingPoint.position, firstDirection);
 
-            result.HitPoints = new List<Vector2> { firstHitInfo.point };
+            result.HitPoints.Add(firstHitInfo.point);
 
             int hitLayer = Layer(firstHitInfo);
             
