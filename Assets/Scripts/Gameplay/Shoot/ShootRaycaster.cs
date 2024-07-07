@@ -90,6 +90,11 @@ namespace PopsBubble
         {
             return _shootResult;
         }
+
+        public void ClearShootResult()
+        {
+            _shootResult = new ShootRaycastResult();
+        }
         
         private HexCell LandingCell(HexCell fromCell, Vector2 hitPoint)
         {

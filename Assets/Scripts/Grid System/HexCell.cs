@@ -73,6 +73,12 @@ namespace PopsBubble
             }
             Bubble = null;
         }
+
+        // Used during merging
+        public void SwitchValue(int newValue)
+        {
+            Value = newValue;
+        }
         
         // Transferring data before row movement
         public void TransferData(HexCell fromCell)
@@ -111,7 +117,12 @@ namespace PopsBubble
             Bubble = null;
         }
 
-        public async UniTask DetachBubble()
+        public async UniTask DetachForMerge()
+        {
+            Bubble = null;
+        }
+        
+        public async UniTask DetachForDrop()
         {
             await PopBubble(); // Currently the same functionality
         }

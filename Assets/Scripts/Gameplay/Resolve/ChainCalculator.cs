@@ -50,13 +50,33 @@ namespace PopsBubble
                 }
             }
 
+            // if the immediate cell has no neighbours, ValueCells count becomes zero. It should at least include the initial cell
+            if (valueCells.Count == 0)
+            {
+                valueCells.Add(startingCell);
+            }
+            
             ChainSearchResult result = new ChainSearchResult();
+            result.Value = value;
+            result.Length = valueCells.Count;
+            result.StartingCell = startingCell;
             result.ValueCells = valueCells;
             result.NeighbourCells = neighbourCells;
 
             return result;
         }
-        
+
+        public List<ChainSearchResult> BurstChain(List<HexCell> startingCells)
+        {
+            List<ChainSearchResult> results = new List<ChainSearchResult>();
+
+            foreach (HexCell cell in startingCells)
+            {
+                results.Add(FindChain(cell));
+            }
+
+            return results;
+        }
         
     }
 }

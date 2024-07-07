@@ -23,10 +23,13 @@ namespace PopsBubble
         {
             return (int)Mathf.Pow(BaseValue, power);
         }
-        
+
+       
         // Animation and Tweening variables
 
         public const float BubbleAppearDuration = 0.2f;
+
+        public const float BubbleMergeDuration = 0.2f;
 
         public const float GridDropDuration = 0.2f;
 

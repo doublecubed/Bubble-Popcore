@@ -12,5 +12,7 @@ namespace PopsBubble
         public ShootRaycastResult ShootRaycast(Vector2 direction);
 
         public ShootRaycastResult ShootResult();
+
+        public void ClearShootResult();
     }
 }
