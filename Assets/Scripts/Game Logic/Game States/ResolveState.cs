@@ -13,16 +13,20 @@ namespace PopsBubble
 {
     public class ResolveState : GameState
     {
+        #region REFERENCES
+        
         private HexGrid _grid;
         
         private IChainCalculator _chainCalculator;
         private IIslandCalculator _islandCalculator;
         private IRaycaster _shootRaycaster;
-        private BubbleRaycaster _raycaster;
         private BubblePool _pool;
         
-
         private CancellationToken _ct;
+        
+        #endregion
+        
+        #region CONSTRUCTOR
         
         public ResolveState()
         {
@@ -31,13 +35,35 @@ namespace PopsBubble
             _chainCalculator = DependencyContainer.ChainCalculator;
             _islandCalculator = DependencyContainer.IslandCalculator;
             _shootRaycaster = DependencyContainer.ShootRaycaster;
-            _raycaster = DependencyContainer.BubbleRaycaster;
             _pool = DependencyContainer.BubblePool;
 
             _ct = new CancellationToken();
         }
 
+        #endregion
+        
+        #region METHODS
+        
+        #region State Operation
+        
         public override async void OnEnter()
+        {
+            // Detect and merge chains
+            await DetectAndMergeChains();
+            
+            // Detect and detach islands
+            await DetectAndDetachIslands();
+
+
+            OnStateComplete?.Invoke();
+
+        }
+
+        #endregion
+        
+        #region Internal
+
+        private async UniTask DetectAndMergeChains()
         {
             ShootRaycastResult raycastResult = _shootRaycaster.ShootResult();
 
@@ -76,11 +102,21 @@ namespace PopsBubble
                 startingCell = mergeTargetForFirstChain;
 
             }
-
-            OnStateComplete?.Invoke();
-
         }
 
+        private async UniTask DetectAndDetachIslands()
+        {
+            List<HexCell> islandCells = _islandCalculator.CalculateIslandCells();
+            
+            Debug.Log($"There are {islandCells.Count} cells");
+            
+            foreach (HexCell cell in islandCells)
+            {
+                cell.Clear(true);
+                //cell.Bubble.GetComponent<SpriteRenderer>().color = Color.red;
+            }
+        }
+        
         private HexCell LongestChainNeighbour(List<HexCell> potentialNeighbours)
         {
             List<ChainSearchResult> potentialChains = _chainCalculator.BurstChain(potentialNeighbours);
@@ -171,6 +207,10 @@ namespace PopsBubble
                 .ThenBy(cell => cell.Coordinates.x)
                 .FirstOrDefault();
         }
+        
+        #endregion
+        
+        #endregion
         
     }
 }
