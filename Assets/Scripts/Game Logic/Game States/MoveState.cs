@@ -30,17 +30,20 @@ namespace PopsBubble
         
         public override async void OnEnter()
         {
+            _pathMover.ResetPosition();
+            
             _targetHexCell = _shootRaycaster.ShootResult().LandingCell;
 
             List<Vector2> waypoints = _shootRaycaster.ShootResult().HitPoints;
 
-            await _pathMover.MoveOnPath(_moverTransform, waypoints);
+            await _pathMover.MoveOnPath(waypoints);
             
             await GenerateBubble(_targetHexCell);
             
             OnStateComplete?.Invoke();
         }
-
+        
+        
         private async UniTask GenerateBubble(HexCell targetCell)
         {
             if (targetCell == null) return;

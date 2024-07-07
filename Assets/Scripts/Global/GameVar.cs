@@ -31,6 +31,8 @@ namespace PopsBubble
 
         public const float BubbleMergeDuration = 0.2f;
 
+        public const float BubbleValueSwitchDuration = 0.2f;
+
         public const float GridDropDuration = 0.2f;
 
         public const float BubbleTrailMoveSpeed = 30f;

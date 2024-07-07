@@ -89,7 +89,7 @@ namespace PopsBubble
             {
                 if (pair.Key.y >= minimumYRow)
                 {
-                    int value = Random.Range(minimumPower, maximumPower);
+                    int value = Random.Range(minimumPower, maximumPower + 1);
                     spawnTasks.Add(pair.Value.SetStartingData(value));
                 }
             }

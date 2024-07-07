@@ -8,6 +8,7 @@ using UnityEngine;
 using DG.Tweening;
 using Cysharp.Threading.Tasks;
 using System.Threading;
+using UnityEditor.Timeline.Actions;
 using UnityEngine.Serialization;
 
 namespace PopsBubble
@@ -19,29 +20,34 @@ namespace PopsBubble
         private CancellationToken _ct;
 
         private float _trailMoveSpeed;
+
+        private Transform _movingTransform;
+        private TrailRenderer _trailRenderer;
         
         public BubbleTrailMover()
         {
             _grid = DependencyContainer.Grid;
             _shootingPoint = DependencyContainer.ShootingPoint;
+            _movingTransform = DependencyContainer.MoverTrail;
+            _trailRenderer = _movingTransform.GetComponentInChildren<TrailRenderer>();
             _ct = new CancellationToken();
 
             _trailMoveSpeed = GameVar.BubbleTrailMoveSpeed;
         }
         
-        public async UniTask MoveOnPath(Transform target, List<Vector2> waypoints)
+        public async UniTask MoveOnPath(List<Vector2> waypoints)
         {
-            target.position = _shootingPoint.position;
+            _movingTransform.position = _shootingPoint.position;
            
             float[] waypointDuration = WaypointDuration(waypoints);
             
             for (int i = 0; i < waypoints.Count; i++)
             {
-                await target.DOMove(waypoints[i], waypointDuration[i]).SetEase(Ease.Linear)
+                await _movingTransform.DOMove(waypoints[i], waypointDuration[i]).SetEase(Ease.Linear)
                     .WithCancellation(_ct);
-            }    
-            
-            target.position = _shootingPoint.position;
+            }
+
+            _trailRenderer.time = -1f;
         }
 
         private float[] WaypointDuration(List<Vector2> waypoints)
@@ -64,6 +70,12 @@ namespace PopsBubble
         private float SegmentLength(Vector2 pointOne, Vector2 pointTwo)
         {
             return (pointOne - pointTwo).magnitude;
+        }
+
+        public void ResetPosition()
+        {
+            _movingTransform.position = _shootingPoint.position;
+            _trailRenderer.time = 1f;
         }
     }
 }

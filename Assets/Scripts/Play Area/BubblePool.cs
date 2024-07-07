@@ -21,10 +21,12 @@ namespace PopsBubble
         private Queue<Bubble> _bubbleQueue;
         private HexGrid _grid;
         private float _tweenDuration;
+        private GameFlow _gameFlow;
         private CancellationToken _ct;
         
         private void Start()
         {
+            _gameFlow = DependencyContainer.GameFlow;
             _grid = DependencyContainer.Grid;
             _tweenDuration = GameVar.BubbleAppearDuration;
             _ct = this.GetCancellationTokenOnDestroy();
@@ -38,7 +40,7 @@ namespace PopsBubble
             {
                 GameObject bubble = Instantiate(_bubblePrefab, transform.position, Quaternion.identity, transform);
                 Bubble bubbleScript = bubble.GetComponent<Bubble>();
-                bubbleScript.SetReferences(this, _grid);
+                bubbleScript.SetReferences(_gameFlow,this, _grid);
                 _bubbleQueue.Enqueue(bubbleScript);
             }
         }
@@ -52,7 +54,7 @@ namespace PopsBubble
             bubbleTransform.parent = _grid.BubbleParent;
             bubbleTransform.position = _grid.CellPosition(cell);
             
-            nextBubble.Initialize(new Color(Random.Range(0f,1f), Random.Range(0f,1f), Random.Range(0f,1f), 1f), cell.Value);
+            nextBubble.Initialize(_gameFlow.ColorByValue(cell.Value), cell.Value);
 
             bubbleTransform.localScale = Vector2.zero;
             await bubbleTransform.DOScale(Vector2.one, _tweenDuration).WithCancellation(_ct);
@@ -65,7 +67,6 @@ namespace PopsBubble
             bubble.transform.parent = transform;
             bubble.transform.position = transform.position;
         }
-        
         
     }
 

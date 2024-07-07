@@ -24,6 +24,7 @@ namespace PopsBubble
         #region Level
 
         [field: SerializeField] public LevelProfile LevelProfile { get; private set; }
+        [field: SerializeField] public VisualProfile VisualProfile { get; private set; }
         
         #endregion
         
@@ -74,6 +75,12 @@ namespace PopsBubble
         public GameState CurrentGameState()
         {
             return _stateMachine.CurrentState;
+        }
+
+        public Color ColorByValue(int value)
+        {
+            int modulus = value % VisualProfile.BubbleColors.Length;
+            return VisualProfile.BubbleColors[modulus - 1];
         }
         
         #endregion

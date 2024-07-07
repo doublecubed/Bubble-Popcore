@@ -14,6 +14,7 @@ namespace PopsBubble
 {
     public class Bubble : MonoBehaviour
     {
+        private GameFlow _gameFlow;
         private BubblePool _pool;
         private HexGrid _grid;
         private float _dropDuration;
@@ -25,8 +26,9 @@ namespace PopsBubble
 
         [SerializeField] private int _deafultSortOrder;
         
-        public void SetReferences(BubblePool pool, HexGrid grid)
+        public void SetReferences(GameFlow flow, BubblePool pool, HexGrid grid)
         {
+            _gameFlow = flow;
             _pool = pool;
             _grid = grid;
             _dropDuration = GameVar.GridDropDuration;
@@ -35,6 +37,7 @@ namespace PopsBubble
         
         public void Initialize(Color color, int value)
         {
+            _renderer.color = color;
             _renderer.sortingOrder = _deafultSortOrder;
             _valueText.sortingOrder = _deafultSortOrder + 1;
             
@@ -44,7 +47,8 @@ namespace PopsBubble
 
         public void SwitchValue(int value)
         {
-            _valueText.DOText(GameVar.DisplayValue(value).ToString("F00"), 0.1f);
+            _valueText.DOText(GameVar.DisplayValue(value).ToString("F00"), GameVar.BubbleValueSwitchDuration);
+            _renderer.DOColor(_gameFlow.ColorByValue(value), GameVar.BubbleValueSwitchDuration);
         }
         
         public void SendToBack()

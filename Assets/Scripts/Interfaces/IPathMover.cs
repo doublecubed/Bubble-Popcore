@@ -10,6 +10,8 @@ namespace PopsBubble
 {
     public interface IPathMover
     {
-        public UniTask MoveOnPath(Transform target, List<Vector2> waypoints);
+        public UniTask MoveOnPath(List<Vector2> waypoints);
+
+        public void ResetPosition();
     }
 }
