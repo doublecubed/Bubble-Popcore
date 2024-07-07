@@ -14,7 +14,9 @@ namespace PopsBubble
     {
         [Header("Prefab References")] 
         [SerializeField] private GameObject _bubblePrefab;
+        [SerializeField] private GameObject _bubbleIndicatorPrefab;
         [SerializeField] private GameObject _hexCellPrefab;
+        
         
         [Header("GameObject References")]
         [SerializeField] private Transform _shootingPoint;

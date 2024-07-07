@@ -47,7 +47,8 @@ namespace PopsBubble
                     .WithCancellation(_ct);
             }
 
-            _trailRenderer.time = -1f;
+            _trailRenderer.enabled = false;
+            _movingTransform.position = _shootingPoint.position;
         }
 
         private float[] WaypointDuration(List<Vector2> waypoints)
@@ -74,8 +75,8 @@ namespace PopsBubble
 
         public void ResetPosition()
         {
-            _movingTransform.position = _shootingPoint.position;
-            _trailRenderer.time = 1f;
+
+            _trailRenderer.enabled = true;
         }
     }
 }
