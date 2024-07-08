@@ -62,15 +62,21 @@ namespace PopsBubble
             }
         }
 
-        // This is for immediate clearing. Used in dropdown and move up, to clear the row before writing in new data
+        // Clear the hex, and decide what to do with the bubble
         public void Clear(bool recallBubble = false)
         {
             Value = 0;
             _hexCollider.enabled = false;
-            if (Bubble != null && recallBubble)
+            if (Bubble == null) return;
+
+            if (recallBubble)
             {
                 Bubble.PlayParticles();
                 _pool.Recall(Bubble);
+            }
+            else
+            {
+                Bubble.Pop();
             }
             Bubble = null;
         }
@@ -114,28 +120,6 @@ namespace PopsBubble
             {
                 await Bubble.transform.DOMove(Position, GameVar.GridDropDuration).WithCancellation(_ct);
             }
-        }
-        
-        #endregion
-        
-        #region Bubble Manipulation
-        
-        // This is when a bubble is popped or dropped
-        public async UniTask PopBubble()
-        {
-            _hexCollider.enabled = false;
-            Bubble.Pop();
-            Bubble = null;
-        }
-
-        public async UniTask DetachForMerge()
-        {
-            Bubble = null;
-        }
-        
-        public async UniTask DetachForDrop()
-        {
-            await PopBubble(); // Currently the same functionality
         }
         
         #endregion

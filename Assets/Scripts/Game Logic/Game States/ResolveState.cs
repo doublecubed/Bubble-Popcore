@@ -108,12 +108,9 @@ namespace PopsBubble
         {
             List<HexCell> islandCells = _islandCalculator.CalculateIslandCells();
             
-            Debug.Log($"There are {islandCells.Count} cells");
-            
             foreach (HexCell cell in islandCells)
             {
-                cell.Clear(true);
-                //cell.Bubble.GetComponent<SpriteRenderer>().color = Color.red;
+                cell.Clear();
             }
         }
         
@@ -149,8 +146,7 @@ namespace PopsBubble
                 Bubble mergeBubble = mergeCells[i].Bubble;
 
                 clearList.Add(mergeBubble);
-                mergeBubble.SendToBack();
-                moveTasks.Add(mergeBubble.transform.DOMove(targetPosition, GameVar.BubbleMergeDuration).WithCancellation(_ct));
+                moveTasks.Add(mergeBubble.MergeUnder(mergeTarget));
                 
                 mergeCells[i].Clear();
             }

@@ -30,15 +30,22 @@ namespace PopsBubble
         public const float BubbleAppearDuration = 0.2f;
 
         public const float BubbleMergeDuration = 0.2f;
-
+        
         public const float BubbleValueSwitchDuration = 0.2f;
-
         public const float GridDropDuration = 0.2f;
-
         public const float BubbleTrailMoveSpeed = 30f;
         
         // Color Variables
 
         public const float GhostBubbleAlpha = 0.4f;
+        
+        // Bubble Pop Variables
+
+        public const float BubblePopLateralVectorMin = 0.4f;
+        public const float BubblePopLateralVectorMax = 1f;
+        public const float BubblePopVerticalVectorMin = 0.1f;
+        public const float BubblePopVerticalVectorMax = 1f;
+
+        public const float BubblePopForce = 100f;
     }
 }

@@ -28,6 +28,7 @@ namespace PopsBubble
         private const int _rightWallLayer = 7;
         private const int _topWallLayer = 8;
         private const int _cellLayer = 9;
+        private const int _bottomWallLayer = 10;
         
         #endregion
 
