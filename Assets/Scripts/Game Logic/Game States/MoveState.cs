@@ -40,6 +40,9 @@ namespace PopsBubble
             shootingBubble.transform.SetSiblingIndex(0);
             
             List<Vector2> waypoints = _shootRaycaster.ShootResult().HitPoints;
+            
+            
+            
             await _pathMover.MoveOnPath(waypoints);
             
             _targetHexCell.TransferBubbleAndUpdate(shootingBubble, _shootCalculator.GetValue());
@@ -48,15 +51,13 @@ namespace PopsBubble
             
             OnStateComplete?.Invoke();
         }
-        
-        
-        private async UniTask GenerateBubble(HexCell targetCell)
+
+
+        private void SetLastWaypointToCell()
         {
-            if (targetCell == null) return;
             
-            await targetCell.SetStartingData(_shootCalculator.GetValue());
         }
-        
+     
         
     }
 }

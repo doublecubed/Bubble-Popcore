@@ -4,6 +4,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using Cysharp.Threading.Tasks;
@@ -192,9 +193,9 @@ namespace PopsBubble
         // This is a hack. I have to rewrite this later
         public Vector2Int HexCoordinate(Vector2 worldPos)
         {
-            Vector2Int finalCoordinates = Vector2Int.zero;
+            Vector2Int initialCoordinates = Vector2Int.zero;
             
-            float epsilon = 0.5f;
+            float epsilon = 0.58f; // radius of the hex outer circle. 
             for (int i = 0; i < GridSize.x; i++)
             {
                 for (int j = 0; j < GridSize.y; j++)
@@ -204,11 +205,33 @@ namespace PopsBubble
 
                     if ((preciseVector - worldPos).magnitude <= epsilon)
                     {
-                        finalCoordinates = coordinateVector;
+                        initialCoordinates = coordinateVector;
+                        goto outOfNestedLoop;
                     }
                 }
             }
 
+            outOfNestedLoop:
+            
+            // Precise positioning
+            HexCell[] neighbours = NeighbourCells(CellMap[initialCoordinates]);
+            List<HexCell> candidates = neighbours.Where(cell => cell != null).ToList();
+            candidates.Add(CellMap[initialCoordinates]);
+
+            Vector2Int finalCoordinates = candidates[^1].Coordinates; // In case anything goes wrong, it's that first cell
+            float bestDistance = Mathf.Infinity;
+            for (int i = 0; i < candidates.Count; i++)
+            {
+                float distance = (CellPosition(candidates[i]) - worldPos).magnitude;
+
+                if (distance < bestDistance)
+                {
+                    bestDistance = distance;
+                    finalCoordinates = candidates[i].Coordinates;
+                }
+            }
+            
+            
             return finalCoordinates;
         }
 

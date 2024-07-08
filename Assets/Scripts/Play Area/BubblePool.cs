@@ -23,6 +23,8 @@ namespace PopsBubble
         private float _tweenDuration;
         private GameFlow _gameFlow;
         private CancellationToken _ct;
+
+        public int TotalBubbleCount { get; private set; }
         
         private void Start()
         {
@@ -30,6 +32,8 @@ namespace PopsBubble
             _grid = DependencyContainer.Grid;
             _tweenDuration = GameVar.BubbleAppearDuration;
             _ct = this.GetCancellationTokenOnDestroy();
+
+            TotalBubbleCount = 0;
         }
 
         public void InitializeBubbles(int numberOfBubbles)
@@ -39,10 +43,6 @@ namespace PopsBubble
             for (int i = 0; i < numberOfBubbles; i++)
             {
                 SpawnNewBubble();
-                // GameObject bubble = Instantiate(_bubblePrefab, transform.position, Quaternion.identity, transform);
-                // Bubble bubbleScript = bubble.GetComponent<Bubble>();
-                // bubbleScript.SetReferences(_gameFlow,this, _grid);
-                // _bubbleQueue.Enqueue(bubbleScript);
             }
         }
 
@@ -66,7 +66,7 @@ namespace PopsBubble
             bubbleTransform.parent = parent;
             bubbleTransform.position = position;
             
-            bubble.Initialize(value);
+            bubble.PrepareForDispense(value);
 
             bubbleTransform.localScale = Vector2.zero;
             await bubbleTransform.DOScale(Vector2.one, _tweenDuration).WithCancellation(_ct);
@@ -85,9 +85,12 @@ namespace PopsBubble
 
         private void SpawnNewBubble()
         {
+            TotalBubbleCount++;
+            
             GameObject bubble = Instantiate(_bubblePrefab, transform.position, Quaternion.identity, transform);
+            bubble.name = new string($"Bubble {TotalBubbleCount}");
             Bubble bubbleScript = bubble.GetComponent<Bubble>();
-            bubbleScript.SetReferences(_gameFlow,this, _grid);
+            bubbleScript.Initialize(_gameFlow,this, _grid, TotalBubbleCount * 2);
             _bubbleQueue.Enqueue(bubbleScript);
         }
         

@@ -9,7 +9,8 @@ namespace PopsBubble
 {
     public static class GameVar
     {
-        // Gameplay variables
+        #region GAMEPLAY
+        
         private const int BaseValue = 2;
 
         public const float CellWidth = 1f;
@@ -23,7 +24,10 @@ namespace PopsBubble
         {
             return (int)Mathf.Pow(BaseValue, power);
         }
+        
+        #endregion
 
+        #region ANIMATION AND TWEENING
        
         // Animation and Tweening variables
 
@@ -35,9 +39,15 @@ namespace PopsBubble
         public const float GridDropDuration = 0.2f;
         public const float BubbleTrailMoveSpeed = 30f;
         
-        // Color Variables
+        #endregion
+        
+        #region COLOUR AND SORT ORDER
 
         public const float GhostBubbleAlpha = 0.4f;
+
+        public const int FrontMostSortOrder = 499; //Bubble particles is 500, must be lower than that.
+        
+        #endregion
         
         // Bubble Pop Variables
 

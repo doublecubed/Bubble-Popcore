@@ -34,7 +34,7 @@ namespace PopsBubble
         #region VARIABLES
         
         [SerializeField] private Color _defaultTextColor;
-        [SerializeField] private int _deafultSortOrder;
+        [FormerlySerializedAs("_deafultSortOrder")] [SerializeField] private int _defaultSortOrder;
 
         private readonly float _mergeUnderDuration = GameVar.BubbleMergeDuration * 0.5f;
         private readonly Color _mergeUnderColour = new Color(0f, 0f, 0f, 0f);
@@ -63,22 +63,22 @@ namespace PopsBubble
         #region Initialization
         
         // For first creation into the Pool
-        public void SetReferences(GameFlow flow, BubblePool pool, HexGrid grid)
+        public void Initialize(GameFlow flow, BubblePool pool, HexGrid grid, int sortOrder)
         {
             _grid = grid;
             _gameFlow = flow;
             _pool = pool;
             _dropDuration = GameVar.GridDropDuration;
-
+            _defaultSortOrder = sortOrder;
+            
             _ct = new CancellationToken();
         }
         
         // Every time it is dispensed from the pool
-        public void Initialize(int value)
+        public void PrepareForDispense(int value)
         {
             PaintBubble(value);
-            _renderer.sortingOrder = _deafultSortOrder;
-            _valueText.sortingOrder = _deafultSortOrder + 1;
+            ResetOrder();
             
             _valueText.color = _defaultTextColor;
             _valueText.text = GameVar.DisplayValue(value).ToString("F00");
@@ -106,8 +106,7 @@ namespace PopsBubble
         // Merged block goes under
         public async UniTask MergeUnder(HexCell targetCell)
         {
-            _renderer.sortingOrder = 0;
-            _valueText.sortingOrder = 1;
+            SendToBack();
             _particles.Play();
 
             UniTask[] mergeTasks = new UniTask[2];
@@ -119,6 +118,7 @@ namespace PopsBubble
         
         public void Pop()
         {
+            BringToFront();
             SwitchRigidbody(true);
             _rigidbody.AddForce(RandomForceDirection() * GameVar.BubblePopForce);
             _particles.Play();
@@ -127,7 +127,33 @@ namespace PopsBubble
 
         #endregion
         
-        #region Internal
+        #region Renderer Ordering
+        
+        private void SendToBack()
+        {
+            SetOrder(1);
+        }
+
+        private void BringToFront()
+        {
+            int frontOrder = Mathf.Min((_defaultSortOrder + (_pool.TotalBubbleCount + 1) * 2), GameVar.FrontMostSortOrder);
+            SetOrder(frontOrder);
+        }
+
+        private void ResetOrder()
+        {
+            SetOrder(_defaultSortOrder);
+        }
+
+        private void SetOrder(int order)
+        {
+            _renderer.sortingOrder = order;
+            _valueText.sortingOrder = order + 1;
+        }
+        
+        #endregion
+        
+        #region Misc
         
         public void PlayParticles()
         {
@@ -174,7 +200,8 @@ namespace PopsBubble
         {
             _rigidbody.simulated = value;
         }
-        
+
+
         
         #endregion
         
