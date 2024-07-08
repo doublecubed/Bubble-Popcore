@@ -62,6 +62,14 @@ namespace PopsBubble
             }
         }
 
+        // Clears only the value. For moving grid up and down, since new data will be written into it.
+        public void ClearValue()
+        {
+            Value = 0;
+            Bubble = null;
+            _hexCollider.enabled = false;
+        }
+        
         // Clear the hex, and decide what to do with the bubble
         public void Clear(bool recallBubble = false)
         {
@@ -91,7 +99,8 @@ namespace PopsBubble
         public void TransferData(HexCell fromCell)
         {
             Value = fromCell.Value;
-            Bubble = fromCell.Value == 0 ? null : fromCell.Bubble;
+            Bubble = fromCell.Bubble == null ? null : fromCell.Bubble;
+            //Bubble = fromCell.Value == 0 ? null : fromCell.Bubble;
             _hexCollider.enabled = fromCell.Value != 0;
         }
         
@@ -111,15 +120,17 @@ namespace PopsBubble
             _hexCollider.enabled = true;
             Value = value;
         }
-        
-        public async UniTask UpdateAndMove()
+
+        public void UpdatePosition()
         {
             Position = _grid.CellPosition(Coordinates);
             transform.position = Position;
-            if (Bubble != null)
-            {
+        }
+        
+        public async UniTask MoveBubble()
+        {
+            if (Bubble != null) 
                 await Bubble.transform.DOMove(Position, GameVar.GridDropDuration).WithCancellation(_ct);
-            }
         }
         
         #endregion

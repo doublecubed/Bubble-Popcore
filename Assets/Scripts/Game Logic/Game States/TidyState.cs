@@ -26,7 +26,8 @@ namespace PopsBubble
         {
             // int moveDown = Random.Range(0, 3);
             //
-            // if (moveDown == 0) await _grid.MoveGridDown();
+            // if (moveDown == 0)
+            await _grid.MoveGridDown();
 
             OnStateComplete?.Invoke();
         }

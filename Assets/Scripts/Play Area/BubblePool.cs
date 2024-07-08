@@ -38,10 +38,11 @@ namespace PopsBubble
 
             for (int i = 0; i < numberOfBubbles; i++)
             {
-                GameObject bubble = Instantiate(_bubblePrefab, transform.position, Quaternion.identity, transform);
-                Bubble bubbleScript = bubble.GetComponent<Bubble>();
-                bubbleScript.SetReferences(_gameFlow,this, _grid);
-                _bubbleQueue.Enqueue(bubbleScript);
+                SpawnNewBubble();
+                // GameObject bubble = Instantiate(_bubblePrefab, transform.position, Quaternion.identity, transform);
+                // Bubble bubbleScript = bubble.GetComponent<Bubble>();
+                // bubbleScript.SetReferences(_gameFlow,this, _grid);
+                // _bubbleQueue.Enqueue(bubbleScript);
             }
         }
 
@@ -54,6 +55,11 @@ namespace PopsBubble
 
         public async UniTask<Bubble> Dispense(Transform parent, Vector2 position, int value)
         {
+            if (_bubbleQueue.Count <= 0)
+            {
+                SpawnNewBubble();
+            }
+            
             Bubble bubble = _bubbleQueue.Dequeue();
             
             Transform bubbleTransform = bubble.transform;
@@ -75,6 +81,14 @@ namespace PopsBubble
             bubble.transform.parent = transform;
             bubble.transform.position = transform.position;
             bubble.ResetBubble();
+        }
+
+        private void SpawnNewBubble()
+        {
+            GameObject bubble = Instantiate(_bubblePrefab, transform.position, Quaternion.identity, transform);
+            Bubble bubbleScript = bubble.GetComponent<Bubble>();
+            bubbleScript.SetReferences(_gameFlow,this, _grid);
+            _bubbleQueue.Enqueue(bubbleScript);
         }
         
     }

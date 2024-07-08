@@ -225,6 +225,8 @@ namespace PopsBubble
             if (!FirstRowEmpty()) return;
 
             _firstRowOdd = !_firstRowOdd;
+            // Update all Hex positions
+            UpdateCellPositions();
             
             // Transfer all cells down
             for (int i = 1; i < GridSize.y; i++)
@@ -233,11 +235,13 @@ namespace PopsBubble
                 {
                     Vector2Int topCoords = new Vector2Int(j, i);
                     Vector2Int bottomCoords = new Vector2Int(j, i - 1);
-
+                    
                     TransferCellData(topCoords, bottomCoords);
                 }
             }
 
+
+            
             List<UniTask> dropTasks = new List<UniTask>();
             
             // Spawn new bubbles for the top row
@@ -250,7 +254,7 @@ namespace PopsBubble
             // Move the bubbles to new locations
             foreach (KeyValuePair<Vector2Int, HexCell> pair in CellMap)
             {
-                dropTasks.Add(pair.Value.UpdateAndMove());
+                dropTasks.Add(pair.Value.MoveBubble());
             }
             await UniTask.WhenAll(dropTasks);
         }
@@ -263,7 +267,7 @@ namespace PopsBubble
             for (int i = 0; i < GridSize.x; i++)
             {
                 Vector2Int coords = new Vector2Int(i, GridSize.y - 1);
-                CellMap[coords].Clear(true);
+                CellMap[coords].Clear();
             }
             
             // Transfer all cells up
@@ -278,11 +282,14 @@ namespace PopsBubble
                 }
             }
 
+            // Update cell positions
+            UpdateCellPositions();
+            
             // Move the bubbles to new locations
             List<UniTask> dropTasks = new List<UniTask>();
             foreach (KeyValuePair<Vector2Int, HexCell> pair in CellMap)
             {
-                dropTasks.Add(pair.Value.UpdateAndMove());
+                dropTasks.Add(pair.Value.MoveBubble());
             }
             await UniTask.WhenAll(dropTasks);
         }
@@ -306,7 +313,7 @@ namespace PopsBubble
                 int randomIndex = Random.Range(0, scrambleData.Count);
                 cell.AssignData(scrambleData[randomIndex]);
                 scrambleData.RemoveAt(randomIndex);
-                scrambleTasks.Add(cell.UpdateAndMove());
+                scrambleTasks.Add(cell.MoveBubble());
             }
 
             await UniTask.WhenAll(scrambleTasks);
@@ -355,13 +362,14 @@ namespace PopsBubble
             return Random.Range(_minNewCellValue, _maxNewCellValue + 1);
         }
 
+        
         private void TransferCellData(Vector2Int fromCoords, Vector2Int toCoords)
         {
             HexCell targetCell = CellMap[toCoords];
             HexCell sourceCell = CellMap[fromCoords];
-                    
+
             targetCell.TransferData(sourceCell);
-            sourceCell.Clear();
+            sourceCell.ClearValue();
         }
 
         private ScrambleData GenerateScrambleData(HexCell cell)
@@ -370,6 +378,14 @@ namespace PopsBubble
             data.Value = cell.Value;
             data.Bubble = cell.Bubble;
             return data;
+        }
+
+        private void UpdateCellPositions()
+        {
+            foreach (KeyValuePair<Vector2Int, HexCell> pair in CellMap)
+            {
+                pair.Value.UpdatePosition();
+            }
         }
         
         #endregion
@@ -384,7 +400,8 @@ namespace PopsBubble
             {
                 foreach (KeyValuePair<Vector2Int, HexCell> pair in CellMap)
                 {
-                    DrawString(pair.Value.Value.ToString(), CellPosition(pair.Key), Color.green);
+                    DrawString(pair.Value.Value.ToString(), CellPosition(pair.Key), Color.blue);
+                    DrawString(pair.Value.Coordinates.ToString(), CellPosition(pair.Key) + Vector2.down * 0.1f, Color.red);
                 }
             }
         }
