@@ -1,6 +1,7 @@
 // Onur Ereren - June 2024
 // Popcore case
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -21,7 +22,8 @@ namespace PopsBubble
 
         [SerializeField] private SpriteRenderer _renderer;
         [SerializeField] private TextMeshPro _valueText;
-
+        [SerializeField] private ParticleSystem _particles;
+        
         [SerializeField] private Color _defaultTextColor;
 
         [SerializeField] private int _deafultSortOrder;
@@ -35,9 +37,9 @@ namespace PopsBubble
         }
         
         
-        public void Initialize(Color color, int value)
+        public void Initialize(int value)
         {
-            _renderer.color = color;
+            Paint(value);
             _renderer.sortingOrder = _deafultSortOrder;
             _valueText.sortingOrder = _deafultSortOrder + 1;
             
@@ -45,10 +47,19 @@ namespace PopsBubble
             _valueText.text = GameVar.DisplayValue(value).ToString("F00");
         }
 
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                _particles.Play();
+            }
+        }
+
         public void SwitchValue(int value)
         {
             _valueText.DOText(GameVar.DisplayValue(value).ToString("F00"), GameVar.BubbleValueSwitchDuration);
             _renderer.DOColor(_gameFlow.ColorByValue(value), GameVar.BubbleValueSwitchDuration);
+            Paint(value);
         }
         
         public void SendToBack()
@@ -60,12 +71,26 @@ namespace PopsBubble
 
         public void Pop()
         {
+            _particles.Play();
             _pool.Recall(this);
         }
 
         public void Detach()
         {
             Pop();
+        }
+
+        public void PlayParticles()
+        {
+            _particles.Play();
+        }
+        
+        private void Paint(int value)
+        {
+            _renderer.color = _gameFlow.ColorByValue(value);
+            ParticleSystem particles = _particles;
+            ParticleSystem.MainModule main = particles.main;
+            main.startColor = new ParticleSystem.MinMaxGradient(_gameFlow.ColorByValue(value));
         }
     }   
 }

@@ -58,7 +58,7 @@ namespace PopsBubble
             if (value != 0)
             {
                 _hexCollider.enabled = true;
-                await _pool.Dispense(this);
+                Bubble = await _pool.Dispense(this);
             }
         }
 
@@ -69,6 +69,7 @@ namespace PopsBubble
             _hexCollider.enabled = false;
             if (Bubble != null && recallBubble)
             {
+                Bubble.PlayParticles();
                 _pool.Recall(Bubble);
             }
             Bubble = null;
@@ -93,6 +94,16 @@ namespace PopsBubble
         {
             Value = scrambleData.Value;
             Bubble = scrambleData.Bubble;
+        }
+
+        // This is used to transfer the bubble from mover to the hex
+        public void TransferBubbleAndUpdate(Bubble bubble, int value)
+        {
+            Bubble = bubble;
+            bubble.transform.parent = _grid.BubbleParent;
+            bubble.transform.position = _grid.CellPosition(this);
+            _hexCollider.enabled = true;
+            Value = value;
         }
         
         public async UniTask UpdateAndMove()

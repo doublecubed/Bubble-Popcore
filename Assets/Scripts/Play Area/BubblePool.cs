@@ -45,19 +45,27 @@ namespace PopsBubble
             }
         }
 
-        public async UniTask Dispense(HexCell cell)
+        public async UniTask<Bubble> Dispense(HexCell cell)
         {
-            Bubble nextBubble = _bubbleQueue.Dequeue();
-            cell.Bubble = nextBubble;
+            Bubble bubble = await Dispense(_grid.BubbleParent, _grid.CellPosition(cell), cell.Value);
+
+            return bubble;
+        }
+
+        public async UniTask<Bubble> Dispense(Transform parent, Vector2 position, int value)
+        {
+            Bubble bubble = _bubbleQueue.Dequeue();
             
-            Transform bubbleTransform = nextBubble.transform;
-            bubbleTransform.parent = _grid.BubbleParent;
-            bubbleTransform.position = _grid.CellPosition(cell);
+            Transform bubbleTransform = bubble.transform;
+            bubbleTransform.parent = parent;
+            bubbleTransform.position = position;
             
-            nextBubble.Initialize(_gameFlow.ColorByValue(cell.Value), cell.Value);
+            bubble.Initialize(value);
 
             bubbleTransform.localScale = Vector2.zero;
             await bubbleTransform.DOScale(Vector2.one, _tweenDuration).WithCancellation(_ct);
+
+            return bubble;
         }
 
         public async void Recall(Bubble bubble, bool animate = false)

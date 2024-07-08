@@ -6,5 +6,8 @@ namespace PopsBubble
     public interface IShootIndicator
     {
         public void Set(int value, int nextValue);
+
+        public Bubble CurrentBubble();
+        public Bubble NextBubble();
     }
 }

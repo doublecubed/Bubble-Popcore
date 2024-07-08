@@ -36,5 +36,9 @@ namespace PopsBubble
         public const float GridDropDuration = 0.2f;
 
         public const float BubbleTrailMoveSpeed = 30f;
+        
+        // Color Variables
+
+        public const float GhostBubbleAlpha = 0.4f;
     }
 }

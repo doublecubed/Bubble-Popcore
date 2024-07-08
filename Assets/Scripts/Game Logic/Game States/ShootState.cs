@@ -12,11 +12,14 @@ namespace PopsBubble
         #region REFERENCES
         
         private Transform _ghostBubble;
+        private SpriteRenderer _ghostBubbleRenderer;
         
         private PlayerInput _input;
         private IPathDrawer _pathDrawer;
         private IRaycaster _shootRaycaster;
+        private IShootValueCalculator _shootValueCalculator;
         private BubbleRaycaster _raycaster;
+        private GameFlow _gameFlow;
         
         #endregion
         
@@ -32,11 +35,15 @@ namespace PopsBubble
         public ShootState()
         {
             _ghostBubble = DependencyContainer.GhostBubble;
+            _ghostBubbleRenderer = _ghostBubble.GetComponent<SpriteRenderer>();
             
             _input = DependencyContainer.PlayerInput;
             _pathDrawer = DependencyContainer.PathDrawer;
             _shootRaycaster = DependencyContainer.ShootRaycaster;
             _raycaster = DependencyContainer.BubbleRaycaster;
+            _gameFlow = DependencyContainer.GameFlow;
+            _shootValueCalculator = DependencyContainer.ShootCalculator;
+            
             _raycaster.OnBubbleShot += ShotIsTaken;
         }
         
@@ -88,9 +95,11 @@ namespace PopsBubble
                 ClearGhostBubble();
                 return;
             }
+
+            int bubbleValue = _shootValueCalculator.GetValue();
             
             if (_previousFrameTarget != raycastResult.LandingCell) 
-                PositionGhostBubble(raycastResult.LandingCell.Position);
+                PositionGhostBubble(raycastResult.LandingCell.Position, GhostColor(bubbleValue));
         }
         
         private void HandlePathDrawing(List<Vector2> points)
@@ -104,11 +113,12 @@ namespace PopsBubble
             _pathDrawer.DrawPath(points);
         }
 
-        private void PositionGhostBubble(Vector2 position)
+        private void PositionGhostBubble(Vector2 position, Color color)
         {
             _ghostBubbleTween.Kill();
             _ghostBubble.position = position;
             _ghostBubble.localScale = Vector2.zero;
+            _ghostBubbleRenderer.color = color;
             _ghostBubbleTween = _ghostBubble.DOScale(Vector2.one, GameVar.BubbleAppearDuration);
         }
 
@@ -116,6 +126,12 @@ namespace PopsBubble
         {
             _ghostBubbleTween.Kill();
             _ghostBubble.localScale = Vector2.zero;
+        }
+
+        private Color GhostColor(int value)
+        {
+            Color bubbleColor = _gameFlow.ColorByValue(value);
+            return new Color(bubbleColor.r, bubbleColor.g, bubbleColor.b, GameVar.GhostBubbleAlpha);
         }
         
         #endregion

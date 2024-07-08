@@ -79,8 +79,8 @@ namespace PopsBubble
 
         public Color ColorByValue(int value)
         {
-            int modulus = value % VisualProfile.BubbleColors.Length;
-            return VisualProfile.BubbleColors[modulus - 1];
+            int modulus = (value - 1) % VisualProfile.BubbleColors.Length;
+            return VisualProfile.BubbleColors[modulus];
         }
         
         #endregion
