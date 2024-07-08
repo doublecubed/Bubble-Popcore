@@ -29,8 +29,6 @@ namespace PopsBubble
 
         #region ANIMATION AND TWEENING
        
-        // Animation and Tweening variables
-
         public const float BubbleAppearDuration = 0.2f;
 
         public const float BubbleMergeDuration = 0.2f;
@@ -38,6 +36,10 @@ namespace PopsBubble
         public const float BubbleValueSwitchDuration = 0.2f;
         public const float GridDropDuration = 0.2f;
         public const float BubbleTrailMoveSpeed = 30f;
+
+        public const float NeighbourKnockbackDistance = 0.15f;
+        // This duration used for both knockback and recover, effective duration is double the value below
+        public const float NeighbourKnockbackDuration = 0.075f; 
         
         #endregion
         

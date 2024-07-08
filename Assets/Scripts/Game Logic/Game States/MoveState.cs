@@ -3,7 +3,10 @@
 
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
+using System.Threading;
 
 namespace PopsBubble
 {
@@ -18,6 +21,8 @@ namespace PopsBubble
         private IShootValueCalculator _shootCalculator;
 
         private HexCell _targetHexCell;
+
+        private CancellationToken _ct;
         
         public MoveState()
         {
@@ -28,6 +33,8 @@ namespace PopsBubble
             _pathMover = DependencyContainer.PathMover;
             _shootRaycaster = DependencyContainer.ShootRaycaster;
             _shootCalculator = DependencyContainer.ShootCalculator;
+
+            _ct = new CancellationToken();
         }
         
         public override async void OnEnter()
@@ -47,11 +54,30 @@ namespace PopsBubble
             
             _targetHexCell.TransferBubbleAndUpdate(shootingBubble, _shootCalculator.GetValue());
             
-            //await GenerateBubble(_targetHexCell);
+            await KnockbackNeighbourCells(_targetHexCell);
             
             OnStateComplete?.Invoke();
         }
 
+        private async UniTask KnockbackNeighbourCells(HexCell targetCell)
+        {
+            List<HexCell> liveNeighbours =
+                _grid.NeighbourCells(targetCell).Where(cell => cell != null && cell.Value != 0).ToList();
+
+            List<UniTask> knockbackTasks = new List<UniTask>();
+            foreach (HexCell cell in liveNeighbours)
+            {
+                Vector2 knockbackDirection = (cell.Position - targetCell.Position).normalized;
+                Vector2 knockbackPosition = cell.Position + knockbackDirection * GameVar.NeighbourKnockbackDistance;
+                knockbackTasks.Add(cell.Bubble.transform.DOMove(knockbackPosition, GameVar.NeighbourKnockbackDuration)
+                    .OnComplete(() =>
+                    {
+                        cell.Bubble.transform.DOMove(cell.Position, GameVar.NeighbourKnockbackDuration);
+                    }).WithCancellation(_ct));
+            }
+
+            await UniTask.WhenAll(knockbackTasks);
+        }
 
         private void SetLastWaypointToCell(List<Vector2> waypoints)
         {
