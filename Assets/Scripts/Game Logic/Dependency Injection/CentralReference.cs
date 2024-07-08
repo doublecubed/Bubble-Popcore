@@ -28,7 +28,6 @@ namespace PopsBubble
         [SerializeField] private HexGrid _grid;
         [SerializeField] private PlayerInput _playerInput;
         [SerializeField] private BubbleIndicator _bubbleIndicator;
-        [SerializeField] private BubbleRaycaster _bubbleRaycaster;
         [SerializeField] private BubblePool _bubblePool;
         [SerializeField] private LinePathDrawer _pathDrawer;
         
@@ -37,7 +36,7 @@ namespace PopsBubble
             DependencyContainer.Initialize(_bubblePrefab, _hexCellPrefab,
                 _shootingPoint, _ghostBubble, _moverTrail,
                 _grid, _gameFlow, _playerInput, _bubbleIndicator,
-                _bubbleRaycaster, _bubblePool, _pathDrawer);
+                _bubblePool, _pathDrawer);
         }
     }
 

@@ -11,11 +11,11 @@ namespace PopsBubble
     {
         private Transform _moverTransform;
 
+        private HexGrid _grid;
         private IShootIndicator _shootIndicator;
         private IPathMover _pathMover;
         private IRaycaster _shootRaycaster;
         private IShootValueCalculator _shootCalculator;
-        private BubbleRaycaster _raycaster;
 
         private HexCell _targetHexCell;
         
@@ -23,10 +23,10 @@ namespace PopsBubble
         {
             _moverTransform = DependencyContainer.MoverTrail;
 
+            _grid = DependencyContainer.Grid;
             _shootIndicator = DependencyContainer.ShootIndicator;
             _pathMover = DependencyContainer.PathMover;
             _shootRaycaster = DependencyContainer.ShootRaycaster;
-            _raycaster = DependencyContainer.BubbleRaycaster;
             _shootCalculator = DependencyContainer.ShootCalculator;
         }
         
@@ -41,7 +41,7 @@ namespace PopsBubble
             
             List<Vector2> waypoints = _shootRaycaster.ShootResult().HitPoints;
             
-            
+            SetLastWaypointToCell(waypoints);
             
             await _pathMover.MoveOnPath(waypoints);
             
@@ -53,9 +53,10 @@ namespace PopsBubble
         }
 
 
-        private void SetLastWaypointToCell()
+        private void SetLastWaypointToCell(List<Vector2> waypoints)
         {
-            
+            Vector2Int finalCellCoordinates = _grid.HexCoordinate(waypoints[^1]);
+            waypoints[^1] = _grid.CellPosition(finalCellCoordinates);
         }
      
         

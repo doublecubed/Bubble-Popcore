@@ -32,7 +32,6 @@ namespace PopsBubble
         public static GameFlow GameFlow { get; private set; }
         public static PlayerInput PlayerInput { get; private set; }
         public static IShootIndicator ShootIndicator { get; private set; }
-        public static BubbleRaycaster BubbleRaycaster { get; private set; }
         public static IRaycaster ShootRaycaster { get; private set; }
         public static IShootValueCalculator ShootCalculator { get; private set; }
         public static BubblePool BubblePool { get; private set; }
@@ -46,7 +45,7 @@ namespace PopsBubble
         public static void Initialize(GameObject bubblePrefab, GameObject hexCellPrefab,
             Transform shootingPoint, Transform ghostBubble, Transform moverTrail,
             HexGrid grid, GameFlow flow, PlayerInput input, 
-            IShootIndicator shootIndicator, BubbleRaycaster raycaster,
+            IShootIndicator shootIndicator,
             BubblePool pool, IPathDrawer drawer)
         {
             BubblePrefab = bubblePrefab;
@@ -60,7 +59,6 @@ namespace PopsBubble
             GameFlow = flow;
             PlayerInput = input;
             ShootIndicator = shootIndicator;
-            BubbleRaycaster = raycaster;
             BubblePool = pool;
             PathDrawer = drawer;
 

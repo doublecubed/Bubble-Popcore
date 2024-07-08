@@ -18,7 +18,7 @@ namespace PopsBubble
         private IPathDrawer _pathDrawer;
         private IRaycaster _shootRaycaster;
         private IShootValueCalculator _shootValueCalculator;
-        private BubbleRaycaster _raycaster;
+        //private BubbleRaycaster _raycaster;
         private GameFlow _gameFlow;
         
         #endregion
@@ -40,11 +40,10 @@ namespace PopsBubble
             _input = DependencyContainer.PlayerInput;
             _pathDrawer = DependencyContainer.PathDrawer;
             _shootRaycaster = DependencyContainer.ShootRaycaster;
-            _raycaster = DependencyContainer.BubbleRaycaster;
             _gameFlow = DependencyContainer.GameFlow;
             _shootValueCalculator = DependencyContainer.ShootCalculator;
-            
-            _raycaster.OnBubbleShot += ShotIsTaken;
+
+            _input.OnMouseButtonUp += ShotIsTaken;
         }
         
         #endregion
@@ -85,7 +84,6 @@ namespace PopsBubble
             HandleGhostBubble(raycastResult);
 
             _previousFrameTarget = raycastResult.LandingCell;
-            _raycaster._targetCell = raycastResult.LandingCell;
         }
 
         private void HandleGhostBubble(ShootRaycastResult raycastResult)

@@ -12,7 +12,7 @@ namespace PopsBubble
 {
     public class BubbleRaycaster : MonoBehaviour
     {
-        
+        /*
         [SerializeField] private Transform _shootingPoint;
         private GameFlow _gameFlow;
         private PlayerInput _input;
@@ -44,10 +44,7 @@ namespace PopsBubble
             _input.OnMouseButtonUp += ShootSignal;
         }
 
-        public void ResetTargetCell()
-        {
-            _targetCell = null;
-        }
+
         
         private void ShootSignal()
         {
@@ -56,7 +53,7 @@ namespace PopsBubble
             OnBubbleShot?.Invoke();
         }
 
-
+    */
 
         
     }
