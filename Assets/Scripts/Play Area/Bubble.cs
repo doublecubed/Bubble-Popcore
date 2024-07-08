@@ -25,6 +25,7 @@ namespace PopsBubble
         private float _dropDuration;
 
         [SerializeField] private SpriteRenderer _renderer;
+        [SerializeField] private SpriteRenderer _shadowRenderer;
         [SerializeField] private TextMeshPro _valueText;
         [SerializeField] private ParticleSystem _particles;
         [SerializeField] private Rigidbody2D _rigidbody;
@@ -34,7 +35,7 @@ namespace PopsBubble
         #region VARIABLES
         
         [SerializeField] private Color _defaultTextColor;
-        [FormerlySerializedAs("_deafultSortOrder")] [SerializeField] private int _defaultSortOrder;
+        [SerializeField] private int _defaultSortOrder;
 
         private readonly float _mergeUnderDuration = GameVar.BubbleMergeDuration * 0.5f;
         private readonly Color _mergeUnderColour = new Color(0f, 0f, 0f, 0f);
@@ -122,7 +123,6 @@ namespace PopsBubble
             SwitchRigidbody(true);
             _rigidbody.AddForce(RandomForceDirection() * GameVar.BubblePopForce);
             _particles.Play();
-            //_pool.Recall(this);
         }
 
         #endregion
@@ -131,18 +131,24 @@ namespace PopsBubble
         
         private void SendToBack()
         {
-            SetOrder(1);
+            SetOrderLayer(GameVar.MergingSortingLayer);
         }
 
         private void BringToFront()
         {
-            int frontOrder = Mathf.Min((_defaultSortOrder + (_pool.TotalBubbleCount + 1) * 2), GameVar.FrontMostSortOrder);
-            SetOrder(frontOrder);
+            SetOrderLayer(GameVar.FallingSortingLayer);
         }
 
         private void ResetOrder()
         {
+            SetOrderLayer(GameVar.DefaultSortingLayer);
             SetOrder(_defaultSortOrder);
+        }
+
+        private void SetOrderLayer(string layer)
+        {
+            _renderer.sortingLayerName = layer;
+            _valueText.sortingLayerID = SortingLayer.NameToID(layer);
         }
 
         private void SetOrder(int order)
@@ -194,6 +200,7 @@ namespace PopsBubble
         {
             _renderer.enabled = value;
             _valueText.enabled = value;
+            _shadowRenderer.enabled = value;
         }
 
         private void SwitchRigidbody(bool value)

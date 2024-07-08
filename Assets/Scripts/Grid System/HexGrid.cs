@@ -417,6 +417,8 @@ namespace PopsBubble
 
         #region EDITOR VISUALISATION
         
+        #if UNITY_EDITOR
+        
         private void OnDrawGizmos()
         {
             if (Application.isPlaying)
@@ -440,6 +442,8 @@ namespace PopsBubble
             GUI.Label(new Rect(screenPos.x - (size.x / 2), -screenPos.y + view.position.height - 20, size.x, size.y), text);
             UnityEditor.Handles.EndGUI();
         }
+        
+        #endif
         
         #endregion
     }

@@ -42,6 +42,21 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 3767123855
+    locked: 0
+  - name: Shadow
+    uniqueID: 2764711233
+    locked: 0
+  - name: Merging
+    uniqueID: 2410207843
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Falling
+    uniqueID: 793143285
+    locked: 0
+  - name: Particles
+    uniqueID: 1483296905
     locked: 0

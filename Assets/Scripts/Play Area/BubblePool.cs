@@ -90,7 +90,7 @@ namespace PopsBubble
             GameObject bubble = Instantiate(_bubblePrefab, transform.position, Quaternion.identity, transform);
             bubble.name = new string($"Bubble {TotalBubbleCount}");
             Bubble bubbleScript = bubble.GetComponent<Bubble>();
-            bubbleScript.Initialize(_gameFlow,this, _grid, TotalBubbleCount * 2);
+            bubbleScript.Initialize(_gameFlow,this, _grid, (TotalBubbleCount + 1) * 2); // starting from 4 to make way for shadow
             _bubbleQueue.Enqueue(bubbleScript);
         }
         

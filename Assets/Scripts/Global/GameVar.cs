@@ -48,7 +48,14 @@ namespace PopsBubble
         public const float GhostBubbleAlpha = 0.4f;
 
         public const int FrontMostSortOrder = 499; //Bubble particles is 500, must be lower than that.
-        
+
+        public const string BackgroundSortingLayer = "Background";
+        public const string ShadowSortingLayer = "Shadow";
+        public const string MergingSortingLayer = "Merging";
+        public const string DefaultSortingLayer = "Default";
+        public const string FallingSortingLayer = "Falling";
+        public const string ParticleSortingLayer = "Particle";
+
         #endregion
         
         // Bubble Pop Variables

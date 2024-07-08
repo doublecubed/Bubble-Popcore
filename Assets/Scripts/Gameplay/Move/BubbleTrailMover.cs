@@ -3,13 +3,10 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using DG.Tweening;
 using Cysharp.Threading.Tasks;
 using System.Threading;
-using UnityEditor.Timeline.Actions;
-using UnityEngine.Serialization;
 
 namespace PopsBubble
 {
