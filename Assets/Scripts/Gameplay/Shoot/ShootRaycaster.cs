@@ -101,7 +101,7 @@ namespace PopsBubble
         {
             Vector2 hitDirection = (hitPoint - _grid.CellPosition(fromCell.Coordinates)).normalized;
             float hitAngle = Vector2.SignedAngle(Vector2.left, hitDirection) + 180f;
-            int segment = Mathf.RoundToInt(hitAngle / 60f);
+            int segment = Mathf.Clamp(Mathf.RoundToInt(hitAngle / 60f), 0, 5);
 
             HexCell[] neighbourCells = _grid.NeighbourCells(fromCell);
             if (neighbourCells[segment] == null) return null;

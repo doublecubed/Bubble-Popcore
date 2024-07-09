@@ -6,7 +6,8 @@ using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using Lofelt.NiceVibrations;    
+using Lofelt.NiceVibrations;  
+using DG.Tweening;
 
 namespace PopsBubble
 {
@@ -51,10 +52,10 @@ namespace PopsBubble
         
         public override async void OnEnter()
         {
-            // Detect and merge chains
             await DetectAndMergeChains();
+
+            await DetectAndDetachMaxedCells();
             
-            // Detect and detach islands
             await DetectAndDetachIslands();
 
 
@@ -107,6 +108,33 @@ namespace PopsBubble
             }
         }
 
+        private async UniTask DetectAndDetachMaxedCells()
+        {
+            List<HexCell> maxedCells =
+                _grid.CellMap.Values.Where(cell => cell.Value >= GameVar.MaximumPowerValue).ToList();
+
+            List<HexCell> cellsToPop = new List<HexCell>();
+            List<UniTask> centralPopTasks = new List<UniTask>();
+            
+            foreach (HexCell cell in maxedCells)
+            {
+                centralPopTasks.Add(cell.Bubble.transform.DOScale(GameVar.MaxValueCellPopScale, GameVar.MaxValueCellPopDuration).WithCancellation(_ct));
+                
+                HexCell[] neighbourCells = _grid.NeighbourCells(cell);
+                List<HexCell> liveCells = neighbourCells.Where(cell => cell != null && cell.Value > 0).ToList();
+                liveCells.Add(cell);
+                
+                cellsToPop.AddRange(liveCells);
+            }
+
+            await UniTask.WhenAll(centralPopTasks);
+            
+            foreach (HexCell cell in cellsToPop)
+            {
+                cell.Clear();
+            }
+        }
+        
         private async UniTask DetectAndDetachIslands()
         {
             List<HexCell> islandCells = _islandCalculator.CalculateIslandCells();

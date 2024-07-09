@@ -11,8 +11,10 @@ namespace PopsBubble
     {
         #region GAMEPLAY
         
-        private const int BaseValue = 2;
+        private const int PowerBaseValue = 2;
 
+        public const int MaximumPowerValue = 11;
+        
         public const float CellWidth = 1f;
 
         public static float RowHeight()
@@ -22,7 +24,7 @@ namespace PopsBubble
         
         public static int DisplayValue(int power)
         {
-            return (int)Mathf.Pow(BaseValue, power);
+            return (int)Mathf.Pow(PowerBaseValue, power);
         }
         
         #endregion
@@ -43,6 +45,9 @@ namespace PopsBubble
         public const float MergePointRiseDistance = 1.5f;
         public const float MergePointRiseDuration = 1f;
         public const float MergePointRiseScaleIncrease = 1.2f;
+
+        public const float MaxValueCellPopScale = 1.2f;
+        public const float MaxValueCellPopDuration = 0.5f;
         
         #endregion
         
