@@ -28,9 +28,8 @@ namespace PopsBubble
         #endregion
 
         #region ANIMATION AND TWEENING
-       
+        
         public const float BubbleAppearDuration = 0.2f;
-
         public const float BubbleMergeDuration = 0.2f;
         
         public const float BubbleValueSwitchDuration = 0.2f;
@@ -39,7 +38,11 @@ namespace PopsBubble
 
         public const float NeighbourKnockbackDistance = 0.15f;
         // This duration used for both knockback and recover, effective duration is double the value below
-        public const float NeighbourKnockbackDuration = 0.075f; 
+        public const float NeighbourKnockbackDuration = 0.075f;
+
+        public const float MergePointRiseDistance = 1.5f;
+        public const float MergePointRiseDuration = 1f;
+        public const float MergePointRiseScaleIncrease = 1.2f;
         
         #endregion
         
@@ -58,7 +61,7 @@ namespace PopsBubble
 
         #endregion
         
-        // Bubble Pop Variables
+        #region BUBBLE POP
 
         public const float BubblePopLateralVectorMin = 0.4f;
         public const float BubblePopLateralVectorMax = 1f;
@@ -67,8 +70,12 @@ namespace PopsBubble
 
         public const float BubblePopForce = 100f;
         
-        // Audio Variables
-
+        #endregion
+        
+        #region AUDIO
+        
         public const int IslandPopSoundTreshold = 6;
+        
+        #endregion
     }
 }

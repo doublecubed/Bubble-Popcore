@@ -14,9 +14,8 @@ namespace PopsBubble
     {
         [Header("Prefab References")] 
         [SerializeField] private GameObject _bubblePrefab;
-        [SerializeField] private GameObject _bubbleIndicatorPrefab;
         [SerializeField] private GameObject _hexCellPrefab;
-        
+        [SerializeField] private GameObject _mergePointPrefab;
         
         [Header("GameObject References")]
         [SerializeField] private Transform _shootingPoint;
@@ -33,7 +32,7 @@ namespace PopsBubble
         
         private void Awake()
         {
-            DependencyContainer.Initialize(_bubblePrefab, _hexCellPrefab,
+            DependencyContainer.Initialize(_bubblePrefab, _hexCellPrefab, _mergePointPrefab,
                 _shootingPoint, _ghostBubble, _moverTrail,
                 _grid, _gameFlow, _playerInput, _bubbleIndicator,
                 _bubblePool, _pathDrawer);

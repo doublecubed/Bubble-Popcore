@@ -25,6 +25,8 @@ namespace PopsBubble
         private BubblePool _pool;
         
         private CancellationToken _ct;
+
+        private GameObject _mergePointPrefab;
         
         #endregion
         
@@ -40,6 +42,8 @@ namespace PopsBubble
             _pool = DependencyContainer.BubblePool;
 
             _ct = new CancellationToken();
+
+            _mergePointPrefab = DependencyContainer.MergePointPrefab;
         }
 
         #endregion
@@ -173,6 +177,8 @@ namespace PopsBubble
             
             await UniTask.WhenAll(moveTasks);
 
+
+            
             foreach (Bubble bubble in clearList)
             {
                 _pool.Recall(bubble);
@@ -180,6 +186,8 @@ namespace PopsBubble
             
             mergeTarget.SwitchValue(newValue);
             mergeTarget.Bubble.SwitchValue(newValue);
+            
+            SpawnMergePoint(mergeTarget);
         }
 
         private async UniTask DetachIslands(List<HexCell> islandCells)
@@ -222,6 +230,14 @@ namespace PopsBubble
             return cells.OrderByDescending(cell => cell.Coordinates.y)
                 .ThenBy(cell => cell.Coordinates.x)
                 .FirstOrDefault();
+        }
+
+        private void SpawnMergePoint(HexCell cell)
+        {
+            GameObject point = Object.Instantiate(_mergePointPrefab);
+            point.transform.position = _grid.CellPosition(cell);
+            MergePoint pointScript = point.GetComponent<MergePoint>();
+            pointScript.Initialize(cell.Value);
         }
         
         #endregion

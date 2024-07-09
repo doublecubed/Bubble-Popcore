@@ -16,7 +16,7 @@ namespace PopsBubble
         
         public static GameObject BubblePrefab { get; private set; }
         public static GameObject HexCellPrefab { get; private set; }
-        
+        public static GameObject MergePointPrefab { get; private set; }
         #endregion
         
         #region TRANSFORM REFERENCES
@@ -42,7 +42,7 @@ namespace PopsBubble
         
         #endregion
         
-        public static void Initialize(GameObject bubblePrefab, GameObject hexCellPrefab,
+        public static void Initialize(GameObject bubblePrefab, GameObject hexCellPrefab, GameObject mergePointPrefab,
             Transform shootingPoint, Transform ghostBubble, Transform moverTrail,
             HexGrid grid, GameFlow flow, PlayerInput input, 
             IShootIndicator shootIndicator,
@@ -50,6 +50,7 @@ namespace PopsBubble
         {
             BubblePrefab = bubblePrefab;
             HexCellPrefab = hexCellPrefab;
+            MergePointPrefab = mergePointPrefab;
             
             ShootingPoint = shootingPoint;
             GhostBubble = ghostBubble;

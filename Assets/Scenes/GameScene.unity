@@ -1746,8 +1746,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bubblePrefab: {fileID: 7615426999544883533, guid: 4117eb8938344574686ff0d3c013b3eb, type: 3}
-  _bubbleIndicatorPrefab: {fileID: 7574528349852276849, guid: 1cca179b6e8c90949bbbdb21cbebb5c0, type: 3}
   _hexCellPrefab: {fileID: 6447535554052761815, guid: 4e8015f02a74368439beb5c1af5206fc, type: 3}
+  _mergePointPrefab: {fileID: 7408025097355453146, guid: 8c39a9e6f37e235459c5285452a8e8df, type: 3}
   _shootingPoint: {fileID: 35203891}
   _ghostBubble: {fileID: 7996868247072820000}
   _moverTrail: {fileID: 1781310631}
