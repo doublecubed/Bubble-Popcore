@@ -21,7 +21,6 @@ namespace PopsBubble
         private HexGrid _grid;
         private GameFlow _gameFlow;
         private BubblePool _pool;
-        private float _dropDuration;
 
         [SerializeField] private SpriteRenderer _renderer;
         [SerializeField] private SpriteRenderer _shadowRenderer;
@@ -68,7 +67,6 @@ namespace PopsBubble
             _grid = grid;
             _gameFlow = flow;
             _pool = pool;
-            _dropDuration = GameVar.GridDropDuration;
             _defaultSortOrder = sortOrder;
             
             _ct = new CancellationToken();

@@ -59,11 +59,9 @@ namespace PopsBubble
 
             await DetectAndDetachMaxedCells();
             
-            await DetectAndDetachIslands();
-
+            DetectAndDetachIslands();
 
             OnStateComplete?.Invoke();
-
         }
 
         #endregion
@@ -138,7 +136,7 @@ namespace PopsBubble
             }
         }
         
-        private async UniTask DetectAndDetachIslands()
+        private void DetectAndDetachIslands()
         {
             List<HexCell> islandCells = _islandCalculator.CalculateIslandCells();
 
@@ -216,11 +214,6 @@ namespace PopsBubble
             mergeTarget.Bubble.SwitchValue(newValue);
             
             SpawnMergePoint(mergeTarget);
-        }
-
-        private async UniTask DetachIslands(List<HexCell> islandCells)
-        {
-            
         }
 
         private void PaintChain(ChainSearchResult result)

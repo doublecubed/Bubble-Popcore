@@ -88,7 +88,7 @@ namespace PopsBubble
             return bubble;
         }
 
-        public async void Recall(Bubble bubble)
+        public void Recall(Bubble bubble)
         {
             _bubbleQueue.Enqueue(bubble);
 
