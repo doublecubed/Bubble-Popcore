@@ -3169,7 +3169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cellParent: {fileID: 135696885}
   <BubbleParent>k__BackingField: {fileID: 1237429113}
-  <GridSize>k__BackingField: {x: 6, y: 10}
+  <GridSize>k__BackingField: {x: 6, y: 11}
   _hexCellPrefab: {fileID: 6447535554052761815, guid: 4e8015f02a74368439beb5c1af5206fc, type: 3}
   _bubblePrefab: {fileID: 7615426999544883533, guid: 4117eb8938344574686ff0d3c013b3eb, type: 3}
 --- !u!4 &1482849798
@@ -4701,7 +4701,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1919834574
 Transform:
   m_ObjectHideFlags: 0

@@ -61,7 +61,10 @@ namespace PopsBubble
 
         private bool IsTopCell(HexCell cell)
         {
-            return cell.Coordinates.y >= _grid.GridSize.y - 1;
+            // TODO: Part of the workaround for not being able to send bubble to the top row.
+            // There is an extra row above the top row, so now we have to check for the top two rows instead.
+            return cell.Coordinates.y >= _grid.GridSize.y - 2;
+            //return cell.Coordinates.y >= _grid.GridSize.y - 1;
         }
     }
 

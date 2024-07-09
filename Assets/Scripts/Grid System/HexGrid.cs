@@ -9,6 +9,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine.Serialization;
 
 namespace PopsBubble
@@ -262,8 +263,6 @@ namespace PopsBubble
                     TransferCellData(topCoords, bottomCoords);
                 }
             }
-
-
             
             List<UniTask> dropTasks = new List<UniTask>();
             
@@ -272,6 +271,16 @@ namespace PopsBubble
             {
                 Vector2Int coords = new Vector2Int(i, GridSize.y - 1);
                 dropTasks.Add(CellMap[coords].SetStartingData(RandomStartingValue()));
+            }
+            
+            // TODO: Part of the workaround for not being able to send bubble to the top row.
+            // Re-animate the row below the top row, because that is perceived as the top row.
+            for (int i = 0; i < GridSize.x; i++)
+            {
+                Vector2Int coords = new Vector2Int(i, GridSize.y - 2);
+                CellMap[coords].Bubble.transform.localScale = Vector2.zero;
+                dropTasks.Add(CellMap[coords].Bubble.transform.DOScale(Vector2.one, GameVar.BubbleAppearDuration)
+                    .WithCancellation(this.GetCancellationTokenOnDestroy()));
             }
             
             // Move the bubbles to new locations

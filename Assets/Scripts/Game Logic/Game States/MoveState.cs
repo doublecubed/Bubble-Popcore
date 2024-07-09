@@ -56,10 +56,8 @@ namespace PopsBubble
         public override async void OnEnter()
         {
             _pathMover.ResetPosition();
+            
             _targetHexCell = _shootRaycaster.ShootResult().LandingCell;
-
-            if (_targetHexCell == null) Debug.Log("it's null Jim");
-            else Debug.Log($"targetCell is {_targetHexCell.Coordinates}");
             
             Bubble shootingBubble = _shootIndicator.CurrentBubble();
             shootingBubble.transform.parent = _moverTransform;

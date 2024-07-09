@@ -36,6 +36,10 @@ namespace PopsBubble
                 {
                     if (neighbours[i] == null || neighbours[i].Value == 0) continue;
 
+                    // TODO: Part of the workaround for not being able to send bubble to the top row.
+                    // The top-most row is removed from the chain calculation process. It doesn't exist *swoosh*
+                    if (neighbours[i].Coordinates.y >= _grid.GridSize.y - 1) continue;
+                    
                     if (neighbours[i].Value == value && !valueCells.Contains(neighbours[i]))
                     {
                         valueCells.Add(neighbours[i]);

@@ -59,7 +59,6 @@ namespace PopsBubble
         public override void OnUpdate()
         {
             UpdateShootingPath();
-
         }
 
         public override void OnExit()
