@@ -24,12 +24,14 @@ https://www.youtube.com/watch?v=jWRIf23YUeA
 
 
 -- CURRENTLY MISSING FEATURES:
-* Bubbles cannot spawn in top layer (work in progress)
 * Level-up and score system
 * Pause button not operational
 * In game pop-ups not present
 * There is no lose state
 
+
+-- KNOWN BUGS
+* Bubbles cannot spawn in top layer. Top layer can be targeted, but MoveState somehow takes the LandingCell as null. This is being investigated.
 
 
 -- HOW THE CODEBASE WORKS:

@@ -4,8 +4,6 @@
 // Calculates the path of the shoot and the end HexCell.
 // Also makes the path be drawn on the screen.
 
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -75,7 +73,6 @@ namespace PopsBubble
             {
                 Vector2Int topRowCoordinates = _grid.HexCoordinate(firstHitInfo.point);
                 result.LandingCell = _grid.CellFromCoordinates(topRowCoordinates);
-                
                 return result;
             }
             

@@ -13,6 +13,8 @@ namespace PopsBubble
 {
     public class MoveState : GameState
     {
+        #region REFERENCES
+        
         private Transform _moverTransform;
 
         private HexGrid _grid;
@@ -21,9 +23,17 @@ namespace PopsBubble
         private IRaycaster _shootRaycaster;
         private IShootValueCalculator _shootCalculator;
 
+        #endregion
+        
+        #region VARIABLES
+        
         private HexCell _targetHexCell;
 
         private CancellationToken _ct;
+        
+        #endregion
+        
+        #region CONSTRUCTOR
         
         public MoveState()
         {
@@ -38,11 +48,19 @@ namespace PopsBubble
             _ct = new CancellationToken();
         }
         
+        #endregion
+        
+        #region METHODS
+        #region State Operation
+        
         public override async void OnEnter()
         {
             _pathMover.ResetPosition();
             _targetHexCell = _shootRaycaster.ShootResult().LandingCell;
 
+            if (_targetHexCell == null) Debug.Log("it's null Jim");
+            else Debug.Log($"targetCell is {_targetHexCell.Coordinates}");
+            
             Bubble shootingBubble = _shootIndicator.CurrentBubble();
             shootingBubble.transform.parent = _moverTransform;
             shootingBubble.transform.SetSiblingIndex(0);
@@ -63,6 +81,10 @@ namespace PopsBubble
             OnStateComplete?.Invoke();
         }
 
+        #endregion
+        
+        #region Other
+        
         private async UniTask KnockbackNeighbourCells(HexCell targetCell)
         {
             List<HexCell> liveNeighbours =
@@ -89,6 +111,8 @@ namespace PopsBubble
             waypoints[^1] = _grid.CellPosition(finalCellCoordinates);
         }
      
+        #endregion
+        #endregion
         
     }
 }
