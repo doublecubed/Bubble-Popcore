@@ -30,9 +30,6 @@ https://www.youtube.com/watch?v=jWRIf23YUeA
 * There is no lose state
 
 
--- KNOWN BUGS
-* Bubbles cannot spawn in top layer. Top layer can be targeted, but MoveState somehow takes the LandingCell as null. This is being investigated.
-
 
 -- HOW THE CODEBASE WORKS:
 GameFlow class is the starting point for the game. It has a GameStateMachine class that separates the game into different game states:
