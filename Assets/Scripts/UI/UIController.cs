@@ -19,6 +19,15 @@ namespace PopsBubble
 
         #region MONOBEHAVIOUR
 
+        private void Awake()
+        {
+            // Set Screensize for Windows build
+            #if UNITY_STANDALONE_WIN
+                        Screen.SetResolution(562, 1000, false);
+                        Screen.fullScreen = false;
+            #endif
+        }
+
         private void Start()
         {
             _grid = DependencyContainer.Grid;
