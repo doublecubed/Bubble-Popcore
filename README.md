@@ -24,7 +24,6 @@ https://www.youtube.com/watch?v=jWRIf23YUeA
 
 
 -- CURRENTLY MISSING FEATURES:
-* Merges don't create "damage numbers"
 * Bubble doesn't pop at 2048 (work in progress)
 * Bubbles cannot spawn in top layer (work in progress)
 * Level-up and score system
