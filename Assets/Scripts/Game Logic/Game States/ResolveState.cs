@@ -5,10 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using DG.Tweening;
-using MoreMountains.FeedbacksForThirdParty;
 using UnityEngine;
-using UnityEngine.Networking;
 using Lofelt.NiceVibrations;    
 
 namespace PopsBubble
