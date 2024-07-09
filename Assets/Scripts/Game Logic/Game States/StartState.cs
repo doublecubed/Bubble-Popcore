@@ -1,17 +1,27 @@
 // Onur Ereren - June 2024
 // Popcore case
 
-using UnityEngine;
+// This is where the GameStateMachine starts from. Creates and populates the grid.
 
 namespace PopsBubble
 {
     public class StartState : GameState
     {
+        #region REFERENCES
+        
         private HexGrid _grid;
+        
+        #endregion
+        
+        #region VARIABLES
+        
         private int _numberOfRows;
         private int _minimumStartingValue;
         private int _maximumStartingValue;
         
+        #endregion
+        
+        #region CONSTRUCTOR
         
         public StartState()
         {
@@ -21,6 +31,10 @@ namespace PopsBubble
             _maximumStartingValue = DependencyContainer.GameFlow.LevelProfile.MaximumStartingValue;
         }
         
+        #endregion
+        
+        #region METHODS
+        
         public override async void OnEnter()
         {
             _grid.Initialize();
@@ -29,5 +43,7 @@ namespace PopsBubble
 
             OnStateComplete?.Invoke();
         }
+        
+        #endregion
     }
 }

@@ -1,33 +1,43 @@
 // Onur Ereren - June 2024
 // Popcore case
 
+// Tidies up the grid after resolution.
+// Currently only tasked with dropping down the grid, but should also check for loss condition or level ups
+
 using UnityEngine;
-using Cysharp.Threading.Tasks;
-using DG.Tweening;
 using System.Threading;
 
 namespace PopsBubble
 {
     public class TidyState : GameState
     {
+        #region REFERENCES
+        
         private GameFlow _gameFlow;
         private HexGrid _grid;
-        private float _rowHeight;
-        private CancellationToken _ct;
-
+        
+        #endregion
+        
+        #region VARIABLES
+        
         private int _dropdownFrequency;
+        
+        #endregion
+        
+        #region CONSTRUCTOR
         
         public TidyState()
         {
             _gameFlow = DependencyContainer.GameFlow;
             _grid = DependencyContainer.Grid;
-            _rowHeight = GameVar.RowHeight();
-            _ct = new CancellationToken();
 
             _dropdownFrequency = _gameFlow.LevelProfile.DropdownFrequency;
         }
         
+        #endregion
 
+        #region METHODS
+        
         public override async void OnEnter()
         {
             int moveDown = Random.Range(0, _dropdownFrequency);
@@ -36,5 +46,7 @@ namespace PopsBubble
 
             OnStateComplete?.Invoke();
         }
+        
+        #endregion
     }
 }

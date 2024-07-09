@@ -1,19 +1,33 @@
-using System.Collections;
+// Onur Ereren - July 2024
+// Popcore case
+
+// Calculates any isolated cells not connected to the top row,
+// Thus forming an "island"
+
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace PopsBubble
 {
     public class IslandCalculator : IIslandCalculator
     {
+        #region REFERENCES
+        
         private HexGrid _grid;
 
+        #endregion
+        
+        #region CONSTRUCTOR
+        
         public IslandCalculator()
         {
             _grid = DependencyContainer.Grid;
         }
+        
+        #endregion
+        
+        #region METHODS
         
         public List<HexCell> CalculateIslandCells()
         {
@@ -66,6 +80,8 @@ namespace PopsBubble
             return cell.Coordinates.y >= _grid.GridSize.y - 2;
             //return cell.Coordinates.y >= _grid.GridSize.y - 1;
         }
+        
+        #endregion
     }
 
 }

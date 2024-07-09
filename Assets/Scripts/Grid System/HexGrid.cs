@@ -1,16 +1,14 @@
 // Onur Ereren - June 2024
 // Popcore case
 
-using System;
-using System.Collections;
+// Hexagonal grid system used in the game.
+
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using UnityEditor.ShaderGraph.Internal;
-using UnityEngine.Serialization;
 
 namespace PopsBubble
 {

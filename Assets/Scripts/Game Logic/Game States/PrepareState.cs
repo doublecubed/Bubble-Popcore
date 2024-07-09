@@ -1,26 +1,37 @@
 // Onur Ereren - June 2024
 // Popcore case
 
-using UnityEngine;
+// Prepares the bubble to be shot, and the bubble after that.
 
 namespace PopsBubble
 {
     public class PrepareState : GameState
     {
+        #region REFERENCES
+        
         private IShootIndicator _shootIndicator;
         private IShootValueCalculator _shootCalculator;
         
-        private int _maximumShootValue;
+        #endregion
+        
+        #region VARIABLES
 
         private int _nextShootValue;
         private int _shootValue;
+        
+        #endregion
+        
+        #region INITIALIZATION
         
         public PrepareState()
         {
             _shootIndicator = DependencyContainer.ShootIndicator;
             _shootCalculator = DependencyContainer.ShootCalculator;
-            _maximumShootValue = DependencyContainer.GameFlow.LevelProfile.MaximumShootValue;
         }
+        
+        #endregion
+        
+        #region METHODS
         
         public override void OnEnter()
         {
@@ -31,5 +42,7 @@ namespace PopsBubble
 
             OnStateComplete?.Invoke();
         }
+        
+        #endregion
     }
 }

@@ -1,8 +1,9 @@
 // Onur Ereren - June 2024
 // Popcore case
 
-using System.Collections;
-using System.Collections.Generic;
+// HexCell used by the HexGrid.
+
+
 using System.Threading;
 using UnityEngine;
 using Cysharp.Threading.Tasks;

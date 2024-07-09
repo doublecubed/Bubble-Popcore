@@ -1,6 +1,9 @@
 // Onur Ereren - June 2024
 // Popcore case
 
+// Resolves the grid after the bubble is placed.
+// Calculates chains, maximum valued cells and island cells.
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;

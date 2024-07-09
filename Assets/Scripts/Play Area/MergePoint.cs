@@ -1,7 +1,9 @@
 // Onur Ereren - July 2024
 // Popcore case
 
-using System;
+// Floating number that appears after a merge happens
+// Has no pool. Destroys itself at the end
+
 using TMPro;
 using UnityEngine;
 using DG.Tweening;

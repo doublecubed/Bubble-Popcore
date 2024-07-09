@@ -1,15 +1,13 @@
 // Onur Ereren - June 2024
 // Popcore case
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
+// Bubble that is spawned in the game field
+// Probably has too much work to do on its own :)
+
 using TMPro;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using UnityEngine.Serialization;
 using System.Threading;
 using Lofelt.NiceVibrations;
 using Random = UnityEngine.Random;

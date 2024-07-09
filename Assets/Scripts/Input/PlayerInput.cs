@@ -1,28 +1,44 @@
 // Onur Ereren - June 2024
 // Popcore case
 
+// Uses the old input system.
+// Filters the input based on screen position of mouse(finger)
+// So that UI elements can be used without providing input
+
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace PopsBubble
 {
     public class PlayerInput : MonoBehaviour
     {
+        #region REFERENCES
+        
         private GameFlow _gameFlow;
         private Camera _mainCam;
         [SerializeField] private Transform _shooterPosition;
 
+        #endregion
+        
+        #region VARIABLES
+        
         [SerializeField] private Vector2 _inputDetectionBottomLeft;
         [SerializeField] private Vector2 _inputDetectionTopRight;
         
+        [field: SerializeField] public Vector2 InputVector { get; private set; }
+        
         private bool _fingerDown;
+        
+        #endregion
+        
+        #region EVENTS
         
         public Action OnMouseButtonUp;
         
-        [field: SerializeField] public Vector2 InputVector { get; private set; }
-
+        #endregion
+        
+        #region MONOBEHAVIOUR
+        
         private void Start()
         {
             _gameFlow = FindObjectOfType<GameFlow>();
@@ -38,6 +54,10 @@ namespace PopsBubble
             }
         }
 
+        #endregion
+        
+        #region METHODS
+        
         private void SetInputVector()
         {
             InputVector = (FingerPos() - (Vector2)_shooterPosition.position).normalized;
@@ -71,5 +91,7 @@ namespace PopsBubble
             return (input.x < _inputDetectionTopRight.x && input.x > _inputDetectionBottomLeft.x &&
                     input.y < _inputDetectionTopRight.y && input.y > _inputDetectionBottomLeft.y);
         }
+        
+        #endregion
     }
 }

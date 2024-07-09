@@ -3,15 +3,14 @@
 
 // A very crude Dependency Injection system. This is the MonoBehaviour side, for references
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace PopsBubble
 {
     public class CentralReference : MonoBehaviour
     {
+        #region REFERENCES
+        
         [Header("Prefab References")] 
         [SerializeField] private GameObject _bubblePrefab;
         [SerializeField] private GameObject _hexCellPrefab;
@@ -30,6 +29,10 @@ namespace PopsBubble
         [SerializeField] private BubblePool _bubblePool;
         [SerializeField] private LinePathDrawer _pathDrawer;
         
+        #endregion
+        
+        #region MONOBEHAVIOUR
+        
         private void Awake()
         {
             DependencyContainer.Initialize(_bubblePrefab, _hexCellPrefab, _mergePointPrefab,
@@ -37,6 +40,8 @@ namespace PopsBubble
                 _grid, _gameFlow, _playerInput, _bubbleIndicator,
                 _bubblePool, _pathDrawer);
         }
+        
+        #endregion
     }
 
 }

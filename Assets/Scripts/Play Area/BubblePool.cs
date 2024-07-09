@@ -1,33 +1,43 @@
 // Onur Ereren - July 2024
 // Popcore case
 
-// Actually spawns the maximum possible number of bubbles on the grid.
+// Actually spawns the maximum possible number of bubbles on the grid at start.
 // A bit wasteful, maybe, but I guess the overhead won't be that much.
 
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using Random = UnityEngine.Random;
 
 namespace PopsBubble
 {
     public class BubblePool : MonoBehaviour
     {
-        [SerializeField] private GameObject _bubblePrefab;
-        private Queue<Bubble> _bubbleQueue;
-        private HexGrid _grid;
-        private float _tweenDuration;
+        #region REFERENCES
+        
         private GameFlow _gameFlow;
-        private CancellationToken _ct;
+        private GameObject _bubblePrefab;
+        private HexGrid _grid;
 
+        #endregion
+        
+        #region VARIABLES
+        
+        private Queue<Bubble> _bubbleQueue;
+        private float _tweenDuration;
         public int TotalBubbleCount { get; private set; }
+
+        private CancellationToken _ct;
+        
+        #endregion
+        
+        #region MONOBEHAVIOUR
         
         private void Start()
         {
+            _bubblePrefab = DependencyContainer.BubblePrefab;
+            
             _gameFlow = DependencyContainer.GameFlow;
             _grid = DependencyContainer.Grid;
             _tweenDuration = GameVar.BubbleAppearDuration;
@@ -36,6 +46,10 @@ namespace PopsBubble
             TotalBubbleCount = 0;
         }
 
+        #endregion
+        
+        #region METHODS
+        
         public void InitializeBubbles(int numberOfBubbles)
         {
             _bubbleQueue = new Queue<Bubble>();
@@ -94,6 +108,7 @@ namespace PopsBubble
             _bubbleQueue.Enqueue(bubbleScript);
         }
         
+        #endregion
     }
 
 }

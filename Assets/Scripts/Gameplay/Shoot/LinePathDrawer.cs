@@ -1,9 +1,9 @@
 // Onur Ereren - June 2024
 // Popcore case
 
-using System;
+// Draws a path with the waypoints given, using the LineRenderer
+
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace PopsBubble
@@ -11,15 +11,30 @@ namespace PopsBubble
 
     public class LinePathDrawer : MonoBehaviour, IPathDrawer
     {
+        #region REFERENCES
+        
         [SerializeField] private Transform _shootingPoint;
-        private Vector2 _shootPosition;
         [SerializeField] private LineRenderer _renderer;
 
+        #endregion
+        
+        #region VARIABLES
+        
+        private Vector2 _shootPosition;
+        
+        #endregion
+        
+        #region MONOBEHAVIOUR
+        
         private void OnEnable()
         {
             _shootPosition = _shootingPoint.position;
         }
 
+        #endregion
+        
+        #region METHODS
+        
         public void DrawPath(List<Vector2> points)
         {
             
@@ -41,5 +56,7 @@ namespace PopsBubble
                 _renderer.SetPosition(i, _shootPosition);
             }
         }
+        
+        #endregion
     }
 }

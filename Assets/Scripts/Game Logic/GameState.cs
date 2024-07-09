@@ -1,10 +1,9 @@
 // Onur Ereren - June 2024
 // Popcore case
 
+// Abstract class that is the basis of all game state classes.
+
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace PopsBubble
 {

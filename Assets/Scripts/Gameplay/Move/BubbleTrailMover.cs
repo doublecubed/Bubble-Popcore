@@ -1,7 +1,8 @@
 // Onur Ereren - July 2024
 // Popcore case
 
-using System.Collections;
+// Moves the bubble and creates its trail.
+
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
@@ -12,18 +13,26 @@ namespace PopsBubble
 {
     public class BubbleTrailMover : IPathMover
     {
+        #region REFERENCES
+        
         private Transform _shootingPoint;
-        private HexGrid _grid;
-        private CancellationToken _ct;
-
-        private float _trailMoveSpeed;
-
         private Transform _movingTransform;
         private TrailRenderer _trailRenderer;
         
+        #endregion
+        
+        #region VARIABLES        
+        
+        private float _trailMoveSpeed;
+
+        private CancellationToken _ct;
+
+        #endregion
+        
+        #region CONSTRUCTOR
+        
         public BubbleTrailMover()
         {
-            _grid = DependencyContainer.Grid;
             _shootingPoint = DependencyContainer.ShootingPoint;
             _movingTransform = DependencyContainer.MoverTrail;
             _trailRenderer = _movingTransform.GetComponentInChildren<TrailRenderer>();
@@ -31,6 +40,10 @@ namespace PopsBubble
 
             _trailMoveSpeed = GameVar.BubbleTrailMoveSpeed;
         }
+        
+        #endregion
+        
+        #region METHODS
         
         public async UniTask MoveOnPath(List<Vector2> waypoints)
         {
@@ -75,5 +88,7 @@ namespace PopsBubble
 
             _trailRenderer.enabled = true;
         }
+        
+        #endregion
     }
 }

@@ -1,11 +1,12 @@
 // Onur Ereren - June 2024
 // Popcore case
 
-using System;
+// Runs the current and next bubbles.
+// Calls bubbles and sets their values
+// also hands them over to the mover.
+
 using UnityEngine;
-using TMPro;
 using Cysharp.Threading.Tasks;
-using System.Collections.Generic;
 using System.Threading;
 using DG.Tweening;
 
@@ -13,25 +14,37 @@ namespace PopsBubble
 {
     public class BubbleIndicator : MonoBehaviour, IShootIndicator
     {
-        private GameFlow _gameFlow;
+        #region REFERENCES
+        
         private BubblePool _pool;
 
         [SerializeField] private Transform _currentPoint;
         [SerializeField] private Transform _nextPoint;
+        
+        #endregion
+        
+        #region VARIABLES
         
         private Bubble _currentBubble;
         private Bubble _nextBubble;
 
         private CancellationToken _ct;
         
+        #endregion
+        
+        #region MONOBEHAVIOUR
+        
         private void Start()
         {
-            _gameFlow = DependencyContainer.GameFlow;
             _pool = DependencyContainer.BubblePool;
 
             _ct = new CancellationToken();
         }
 
+        #endregion
+        
+        #region METHODS
+        
         public async void Set(int value, int nextValue)
         {
             if (_nextBubble == null)
@@ -60,5 +73,7 @@ namespace PopsBubble
         {
             return _nextBubble;
         }
+        
+        #endregion
     }
 }

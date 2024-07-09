@@ -1,20 +1,30 @@
 // Onur Ereren - July 2024
 // Popcore case
 
-using System.Collections;
+// Calculates the chain formed by any given HexCell (or a collection of HexCells), if any
+
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace PopsBubble
 {
     public class ChainCalculator : IChainCalculator
     {
+        #region REFERENCES
+        
         private HexGrid _grid;
 
+        #endregion
+        
+        #region CONSTRUCTOR
+        
         public ChainCalculator()
         {
             _grid = DependencyContainer.Grid;
         }
+        
+        #endregion
+        
+        #region METHODS
         
         public ChainSearchResult FindChain(HexCell startingCell)
         {
@@ -81,6 +91,8 @@ namespace PopsBubble
 
             return results;
         }
+        
+        #endregion
         
     }
 }

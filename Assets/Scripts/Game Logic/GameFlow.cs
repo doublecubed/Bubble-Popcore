@@ -1,11 +1,11 @@
 // Onur Ereren - June 2024
 // Popcore case
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
+// Entrance point of the game. Starts and runs the state machine.
+// Contains the Level information and Visual style information
+// Also responsible of pausing the game (when implemented).
+
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace PopsBubble
 {

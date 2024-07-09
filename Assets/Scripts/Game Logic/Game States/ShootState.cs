@@ -1,6 +1,8 @@
 // Onur Ereren - June 2024
 // Popcore case
 
+// GameState where player takes aim.
+
 using UnityEngine;
 using System.Collections.Generic;
 using DG.Tweening;

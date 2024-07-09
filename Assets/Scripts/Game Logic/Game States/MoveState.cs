@@ -1,6 +1,8 @@
 // Onur Ereren - June 2024
 // Popcore case
 
+// Moves the bubble after player took the shot.
+
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +53,7 @@ namespace PopsBubble
         #endregion
         
         #region METHODS
+        
         #region State Operation
         
         public override async void OnEnter()

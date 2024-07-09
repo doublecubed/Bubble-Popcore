@@ -2,7 +2,7 @@
 // Popcore case
 
 // Calculates the path of the shoot and the end HexCell.
-// Also makes the path be drawn on the screen.
+// Also draws the path on the screen.
 
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,6 +34,10 @@ namespace PopsBubble
         
         #endregion
 
+        #region METHODS
+        
+        #region Main Operation
+        
         public ShootRaycastResult ShootRaycast(Vector2 direction)
         {
             ShootRaycastResult result = new ShootRaycastResult();
@@ -89,6 +93,10 @@ namespace PopsBubble
             return _shootResult;
         }
 
+        #endregion
+        
+        #region Helper
+        
         public void ClearShootResult()
         {
             _shootResult = new ShootRaycastResult();
@@ -122,6 +130,10 @@ namespace PopsBubble
         {
             return new Vector2(-direction.x, direction.y);
         }
+        
+        #endregion
+        
+        #endregion
     }
 
     public struct ShootRaycastResult

@@ -3,6 +3,7 @@
 
 // A very crude Dependency Injection system. This is the container.
 // CentralReference feeds this with objects references from the scene.
+// Also determines which classes are used for interface implementations.
 
 using System.Collections;
 using System.Collections.Generic;
@@ -42,6 +43,8 @@ namespace PopsBubble
         
         #endregion
         
+        #region INITIALIZATION
+        
         public static void Initialize(GameObject bubblePrefab, GameObject hexCellPrefab, GameObject mergePointPrefab,
             Transform shootingPoint, Transform ghostBubble, Transform moverTrail,
             HexGrid grid, GameFlow flow, PlayerInput input, 
@@ -69,6 +72,8 @@ namespace PopsBubble
             ChainCalculator = new ChainCalculator();
             IslandCalculator = new IslandCalculator();
         }
+        
+        #endregion
     }
 
 }

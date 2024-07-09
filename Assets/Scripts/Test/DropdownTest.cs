@@ -1,14 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
+// Onur Ereren - July 2024
+// Popcore case
+
+// Script for testing HexGrid operations. Still useful to this day.
+
 using UnityEngine;
 using PopsBubble;
 using Cysharp.Threading.Tasks;
 
 public class DropdownTest : MonoBehaviour
 {
+    #region REFERENCES
+    
     public HexGrid grid;
 
-    // Update is called once per frame
+    #endregion
+    
+    #region MONOBEHAVIOUR
+    
     private async void Update()
     {
         if (Input.GetKeyDown(KeyCode.W))
@@ -27,6 +35,10 @@ public class DropdownTest : MonoBehaviour
         }
     }
 
+    #endregion
+    
+    #region METHODS
+    
     private async UniTask MoveDown()
     {
         await grid.MoveGridDown();        
@@ -41,4 +53,6 @@ public class DropdownTest : MonoBehaviour
     {
         await grid.ScrambleGrid();
     }
+    
+    #endregion
 }
