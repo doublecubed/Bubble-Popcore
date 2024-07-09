@@ -50,6 +50,8 @@ namespace PopsBubble
             
             SetLastWaypointToCell(waypoints);
             
+            AudioPlayer.PlayAudio("swoosh");
+            
             await _pathMover.MoveOnPath(waypoints);
             
             _targetHexCell.TransferBubbleAndUpdate(shootingBubble, _shootCalculator.GetValue());

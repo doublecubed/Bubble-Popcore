@@ -186,6 +186,8 @@ namespace PopsBubble
 
         private async void HitBottom()
         {
+            AudioPlayer.PlayAudio("pop");
+            
             PlayParticles();
             MakeVisible(false);
             SwitchRigidbody(false);

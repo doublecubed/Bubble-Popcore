@@ -16,3 +16,4 @@ MonoBehaviour:
   MinimumStartingValue: 1
   MaximumStartingValue: 5
   MaximumShootValue: 4
+  DropdownFrequency: 4

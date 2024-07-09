@@ -95,7 +95,7 @@ namespace PopsBubble
                 List<HexCell> firstChainCells = neighboursOfPreferred.Where(cell => cell != null && firstChain.ValueCells.Contains(cell)).ToList();
 
                 HexCell mergeTargetForFirstChain = PreferredCell(firstChainCells);
-
+                
                 await MergeCells(mergeTargetForFirstChain, firstChain.ValueCells, mergedValue);
 
                 // Set the starting cell, so that the while loop will start from here.
@@ -107,6 +107,8 @@ namespace PopsBubble
         private async UniTask DetectAndDetachIslands()
         {
             List<HexCell> islandCells = _islandCalculator.CalculateIslandCells();
+            
+            if (islandCells.Count >= GameVar.IslandPopSoundTreshold) AudioPlayer.PlayAudio("popSeries");
             
             foreach (HexCell cell in islandCells)
             {
@@ -151,6 +153,8 @@ namespace PopsBubble
                 mergeCells[i].Clear();
             }
 
+            AudioPlayer.PlayAudio("pop");
+            
             await UniTask.WhenAll(moveTasks);
 
             foreach (Bubble bubble in clearList)

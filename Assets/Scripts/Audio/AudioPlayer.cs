@@ -26,6 +26,7 @@ namespace PopsBubble
                 int index = Random.Range(0, _clips[action].Length);
                 
                 _source.PlayOneShot(_clips[action][index]);
+                //_source.PlayOneShot(_clips[action][0]);
             }
         }
     }

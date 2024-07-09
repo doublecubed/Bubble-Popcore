@@ -66,5 +66,9 @@ namespace PopsBubble
         public const float BubblePopVerticalVectorMax = 1f;
 
         public const float BubblePopForce = 100f;
+        
+        // Audio Variables
+
+        public const int IslandPopSoundTreshold = 6;
     }
 }
