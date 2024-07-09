@@ -7,6 +7,7 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using System.Threading;
+using Lofelt.NiceVibrations;
 
 namespace PopsBubble
 {
@@ -51,6 +52,7 @@ namespace PopsBubble
             SetLastWaypointToCell(waypoints);
             
             AudioPlayer.PlayAudio("swoosh");
+            HapticPatterns.PlayPreset(HapticPatterns.PresetType.LightImpact);
             
             await _pathMover.MoveOnPath(waypoints);
             

@@ -4,6 +4,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Lofelt.NiceVibrations;
 using UnityEngine;
 
 namespace PopsBubble
@@ -31,17 +32,27 @@ namespace PopsBubble
 
         public async void ScrambleButton()
         {
+            PlayButtonFeedback();
             await _grid.ScrambleGrid();
         }
 
         public async void PushGridUp()
         {
+            PlayButtonFeedback();
             await _grid.MoveGridUp();
         }
         
         #endregion
 
+        #region Feedback
 
+        private void PlayButtonFeedback()
+        {
+            AudioPlayer.PlayAudio("ping");
+            HapticPatterns.PlayPreset(HapticPatterns.PresetType.Selection);
+        }
+        
+        #endregion
         
         #endregion
         

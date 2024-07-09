@@ -11,6 +11,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine.Serialization;
 using System.Threading;
+using Lofelt.NiceVibrations;
 using Random = UnityEngine.Random;
 
 namespace PopsBubble
@@ -187,6 +188,7 @@ namespace PopsBubble
         private async void HitBottom()
         {
             AudioPlayer.PlayAudio("pop");
+            HapticPatterns.PlayPreset(HapticPatterns.PresetType.LightImpact);
             
             PlayParticles();
             MakeVisible(false);

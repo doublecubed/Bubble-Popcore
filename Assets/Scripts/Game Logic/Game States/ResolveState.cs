@@ -6,8 +6,10 @@ using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using MoreMountains.FeedbacksForThirdParty;
 using UnityEngine;
 using UnityEngine.Networking;
+using Lofelt.NiceVibrations;    
 
 namespace PopsBubble
 {
@@ -107,8 +109,12 @@ namespace PopsBubble
         private async UniTask DetectAndDetachIslands()
         {
             List<HexCell> islandCells = _islandCalculator.CalculateIslandCells();
-            
-            if (islandCells.Count >= GameVar.IslandPopSoundTreshold) AudioPlayer.PlayAudio("popSeries");
+
+            if (islandCells.Count >= GameVar.IslandPopSoundTreshold)
+            {
+                AudioPlayer.PlayAudio("popSeries");
+                HapticPatterns.PlayPreset(HapticPatterns.PresetType.MediumImpact);
+            }
             
             foreach (HexCell cell in islandCells)
             {
@@ -153,7 +159,17 @@ namespace PopsBubble
                 mergeCells[i].Clear();
             }
 
-            AudioPlayer.PlayAudio("pop");
+            if (mergeCells.Count >= GameVar.IslandPopSoundTreshold)
+            {
+                AudioPlayer.PlayAudio("popSeries");
+                HapticPatterns.PlayPreset(HapticPatterns.PresetType.MediumImpact);
+            }
+            else
+            {
+                AudioPlayer.PlayAudio("pop");
+                HapticPatterns.PlayPreset(HapticPatterns.PresetType.LightImpact);
+            }
+
             
             await UniTask.WhenAll(moveTasks);
 
