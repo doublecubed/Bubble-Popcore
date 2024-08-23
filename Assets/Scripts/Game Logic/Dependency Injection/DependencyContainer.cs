@@ -40,6 +40,8 @@ namespace PopsBubble
         public static IPathDrawer PathDrawer { get; private set; }
         public static IChainCalculator ChainCalculator { get; private set; }
         public static IIslandCalculator IslandCalculator { get; private set; }
+        public static UIController UIController { get; private set; }
+        public static IScoreKeeper ScoreKeeper { get; private set; }
         
         #endregion
         
@@ -49,7 +51,7 @@ namespace PopsBubble
             Transform shootingPoint, Transform ghostBubble, Transform moverTrail,
             HexGrid grid, GameFlow flow, PlayerInput input, 
             IShootIndicator shootIndicator,
-            BubblePool pool, IPathDrawer drawer)
+            BubblePool pool, IPathDrawer drawer, UIController uiController)
         {
             BubblePrefab = bubblePrefab;
             HexCellPrefab = hexCellPrefab;
@@ -65,12 +67,14 @@ namespace PopsBubble
             ShootIndicator = shootIndicator;
             BubblePool = pool;
             PathDrawer = drawer;
+            UIController = uiController;
 
             PathMover = new BubbleTrailMover();
             ShootCalculator = new ShootValueCalculator(1, flow.LevelProfile.MaximumShootValue);
             ShootRaycaster = new ShootRaycaster();
             ChainCalculator = new ChainCalculator();
             IslandCalculator = new IslandCalculator();
+            ScoreKeeper = new ScoreKeeper();
         }
         
         #endregion

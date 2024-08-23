@@ -5,6 +5,7 @@
 
 using Lofelt.NiceVibrations;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace PopsBubble
 {
@@ -13,9 +14,10 @@ namespace PopsBubble
         #region REFERENCES
 
         private HexGrid _grid;
-
+        [SerializeField] private Slider _levelSlider;
+        
         #endregion
-
+        
         #region MONOBEHAVIOUR
 
         private void Awake()

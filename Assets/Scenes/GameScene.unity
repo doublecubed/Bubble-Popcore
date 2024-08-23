@@ -766,7 +766,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc0de6eb051d16e4e924bd3a5d0c9a2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bubblePrefab: {fileID: 7615426999544883533, guid: 4117eb8938344574686ff0d3c013b3eb, type: 3}
 --- !u!4 &360193449
 Transform:
   m_ObjectHideFlags: 0
@@ -2025,7 +2024,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 24
+  m_text: 2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0391519f35779be49ba38b7f68c17121, type: 2}
   m_sharedMaterial: {fileID: -6191949828876639054, guid: 0391519f35779be49ba38b7f68c17121, type: 2}
@@ -2862,6 +2861,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1272083714}
   - component: {fileID: 1272083713}
+  - component: {fileID: 1272083715}
   m_Layer: 0
   m_Name: UI Controller
   m_TagString: Untagged
@@ -2881,6 +2881,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6a6f9652002b374f94e3c517644185a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _levelSlider: {fileID: 0}
 --- !u!4 &1272083714
 Transform:
   m_ObjectHideFlags: 0
@@ -2896,6 +2897,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1112331163}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1272083715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1272083712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8d516269134c2d45a0a43fc6754695a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scoreText: {fileID: 0}
+  <CurrentScore>k__BackingField: 0
 --- !u!1 &1276903249
 GameObject:
   m_ObjectHideFlags: 0
@@ -4006,7 +4021,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 24
+  m_text: 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0391519f35779be49ba38b7f68c17121, type: 2}
   m_sharedMaterial: {fileID: -6191949828876639054, guid: 0391519f35779be49ba38b7f68c17121, type: 2}
@@ -5152,6 +5167,6 @@ SceneRoots:
   - {fileID: 1264747622}
   - {fileID: 1612576524}
   - {fileID: 1912583895}
-  - {fileID: 7996868247072820000}
-  - {fileID: 1781310631}
   - {fileID: 1112331163}
+  - {fileID: 1781310631}
+  - {fileID: 7996868247072820000}

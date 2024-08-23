@@ -28,6 +28,7 @@ namespace PopsBubble
         [SerializeField] private BubbleIndicator _bubbleIndicator;
         [SerializeField] private BubblePool _bubblePool;
         [SerializeField] private LinePathDrawer _pathDrawer;
+        [SerializeField] private UIController _uiController;
         
         #endregion
         
@@ -38,7 +39,7 @@ namespace PopsBubble
             DependencyContainer.Initialize(_bubblePrefab, _hexCellPrefab, _mergePointPrefab,
                 _shootingPoint, _ghostBubble, _moverTrail,
                 _grid, _gameFlow, _playerInput, _bubbleIndicator,
-                _bubblePool, _pathDrawer);
+                _bubblePool, _pathDrawer, _uiController);
         }
         
         #endregion
