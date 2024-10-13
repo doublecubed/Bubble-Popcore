@@ -1,4 +1,4 @@
-BUBBLE POPCORE! - A Bubble Pops Clone
+POPSBUBBLE! - A Bubble Pops Clone
 
 Made with Unity 2022.3.22f1
 
